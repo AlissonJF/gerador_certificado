@@ -1,0 +1,74 @@
+footer {
+    position: fixed;
+    bottom: 20px;
+    font-family: Arial, Helvetica;
+    font-size: 12px;
+    color: #000;
+}
+
+footer img {
+    margin-left: 20px;
+}
+
+footer span {
+    position: relative;
+    bottom: 4px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+
+.center-con {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.ArrowUP, .ArrowLeft, .ArrowRight, .ArrowDown {
+    position: absolute;
+    border: 2px solid #000;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+
+#cta {
+    width: 100%;
+    cursor: pointer;
+    position: absolute;
+}
+
+#cta .arrow {
+    left: 0;
+}
+
+.arrow {
+    position: absolute;
+    bottom: 0;
+    margin-left: 0;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    top: 8px;
+}
+
+.arrowUP {
+    margin-left: 8px;
+}
+
+.arrowLEFT {
+    margin-left: 8px;
+}
+
+.arrowRIGHT {
+    margin-left: 8px;
+}
+
+.arrowDOWN {
+    margin-left: 8px;
+}
