@@ -3,7 +3,7 @@
 class Index extends Controller {
     function __construct() {
         parent::__construct();
-		$this->view->tsx = array("index/index.tsx");
+		$this->view->js = array("index/index.js");
 		$this->view->css = array("index/index.css");
     }
     function index()

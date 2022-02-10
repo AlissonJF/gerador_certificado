@@ -8,11 +8,11 @@ class Index_Model extends Model
     }
     public function ImageBackgroundRemove()
     {
-        $image = '/test/ass.jpg';
-        var_dump($image); exit;
+        $image = 'test/ass.jpg';
         $img = imagecreatefromstring($image); //or whatever loading function you need
         $white = imagecolorallocate($img, 255, 255, 255);
-        imagecolortransparent($img, $white);
+        $imageFinal = imagecolortransparent($img, $white);
+        var_dump($imageFinal);
         // imagepng($img, $output_file_name);
     }
 }

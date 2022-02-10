@@ -1,14 +1,13 @@
 $(document).ready(function() {
-    $(document).on("click", "btnTransparent", function () {
-        $("#RemoveBackground").submit()
+    $(document).on("click", "#btnTransparent", function () {
+        $("#InfoCertificado").submit()
     });
-    $(document).on("submit", "#RemoveBackground", function () {
+    $(document).on("submit", "#InfoCertificado", function (event) {
         event.preventDefault();
         RemoveBackground(this);
     })
-    function RemoveBackground(image) {
-        console.log(image);
-        $.post(BASEURL + "/index/index", image).then(res => {
+    function RemoveBackground(dados) {
+        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {
             console.log(res.data);
         })
     }
