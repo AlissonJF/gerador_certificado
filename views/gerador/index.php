@@ -2,26 +2,6 @@
     <fieldset>
         <div class="row">
             <div class="col col-md-6 text-center" style="width: 650px">
-                <h2>Visualizar Certificado com assinatura</h2>
-                <div class="col-md-12 mb-3">
-                    <div class="form-outline">
-                        <input name="nome" class="form-control" type="text">
-                        <label class="form-label" for="nome">Nome*</label>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <div class="form-outline">
-                        <input name="email" class="form-control" type="text">
-                        <label class="form-label" for="email">E-Mail*</label>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <div class="form-outline">
-                        <input name="cpf" class="form-control" type="text" maxlength="14"
-                               onkeypress="formatar('###.###.###-##', this);">
-                        <label class="form-label" for="cpf">CPF*</label>
-                    </div>
-                </div>
                 <div class="col-md-12 mb-3">
                     <p><strong>Assinaturas</strong></p>
                     <div class="form-outline">

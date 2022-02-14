@@ -1,11 +1,12 @@
-
 <?php
+
 class Index_Model extends Model
 {
     public function __construct()
     {
         parent::__construct();
     }
+
     public function ImageBackgroundRemove()
     {
         $image = 'test/ass.jpg';
@@ -14,5 +15,19 @@ class Index_Model extends Model
         $imageFinal = imagecolortransparent($img, $white);
         var_dump($imageFinal);
         // imagepng($img, $output_file_name);
+    }
+
+    public function getDados()
+    {
+        $aluno = $this->db->select(
+            "SELECT
+                    sequencia,
+                    nome,
+                    email,
+                    cpf
+                FROM
+                    alunos a"
+        );
+        echo json_encode($aluno);
     }
 }

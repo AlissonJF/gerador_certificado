@@ -13,8 +13,14 @@ class Index extends Controller {
         $this->view->render("index/index");
         $this->view->render("footer");
     }
+
     function ImageBackgroundRemove()
     {
         $this->model->ImageBackgroundRemove();
+    }
+
+    function getDados()
+    {
+        $this->model->getDados();
     }
 }
