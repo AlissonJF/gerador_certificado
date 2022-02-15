@@ -17,8 +17,7 @@
                             <label class="form-label" for="cpf">CPF*</label>
                         </div>
                     </div>
-                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Apenas se a mesma
-                        não se encontrar na lista de seleção de assinaturas.</p>
+                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Dê preferência em adicionar uma imagem <strong>PNG</strong>.</p>
                     <p></p>
                     <div class="col col-md-12 mb-3">
                         <div id="file">
@@ -35,7 +34,7 @@
                         <img id="printImage" src="" style="border-radius: 5px; box-shadow: 6px 6px 8px" width="600"
                              height="400" alt="Adicione uma imagem"/>
                         <br><br>
-                        <button type="button" id="removeBackground" class="btn btn-default">Fundo Assinatura</button>
+                        <button type="button" id="removeBackground" class="btn btn-default">Remover Fundo</button>
                     </div>
                 </div>
             </div>

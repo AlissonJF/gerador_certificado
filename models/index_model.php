@@ -9,12 +9,21 @@ class Index_Model extends Model
 
     public function ImageBackgroundRemove()
     {
-        $image = 'test/ass.jpg';
-        $img = imagecreatefromstring($image); //or whatever loading function you need
-        $white = imagecolorallocate($img, 255, 255, 255);
-        $imageFinal = imagecolortransparent($img, $white);
-        var_dump($imageFinal);
-        // imagepng($img, $output_file_name);
+        $im = imagecreatefromjpeg('test/ass_test.jpg');
+        imagecolortransparent($im);
+        imagefilledrectangle($im, 200, 115, 300, 137);
+
+        imagealphablending($im, false);
+        imagesavealpha($im, true);
+
+        header ('Content-Type: image/png');
+
+        imagepng($im);
+
+        $save = "public/images/ass_copy.png";
+
+        imagepng($im, $save);
+        imagedestroy($im);
     }
 
     public function getDados()

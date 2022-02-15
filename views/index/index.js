@@ -85,15 +85,18 @@ $(document).ready(function () {
 
     $("#receiveFile").change(function () {
         readURL(this);
-        RemoveBackground(this);
     })
 
     $(document).on("submit", "#InfoCertificado", function (event) {
         event.preventDefault();
     });
 
+    $(document).on("click", "#removeBackground", function (img) {
+        event.preventDefault();
+        RemoveBackground(img);
+    })
+
     function RemoveBackground(dados) {
-        console.log(dados);
         $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {
             console.log(res.data);
         })
