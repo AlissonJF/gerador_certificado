@@ -93,10 +93,11 @@ $(document).ready(function () {
 
     $(document).on("click", "#removeBackground", function (img) {
         event.preventDefault();
+        console.log(img)
         RemoveBackground(img);
     });
 
     function RemoveBackground(dados) {
-        $.post(BASEURL + "/index/ImageBackgroundRemove", dados).then(res => {})
+        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {})
     }
 });

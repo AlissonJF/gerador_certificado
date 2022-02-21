@@ -17,7 +17,7 @@
                             <label class="form-label" for="cpf">CPF*</label>
                         </div>
                     </div>
-                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Dê preferência em adicionar uma imagem <strong>JPG</strong>.</p>
+                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Dê preferência em adicionar uma imagem <strong>JPG</strong> ou <strong>JPEG</strong>.</p>
                     <p></p>
                     <div class="col col-md-12 mb-3">
                         <div id="file">
