@@ -85,7 +85,7 @@ $(document).ready(function () {
 
     $("#receiveFile").change(function () {
         readURL(this);
-    })
+    });
 
     $(document).on("submit", "#InfoCertificado", function (event) {
         event.preventDefault();
@@ -94,11 +94,9 @@ $(document).ready(function () {
     $(document).on("click", "#removeBackground", function (img) {
         event.preventDefault();
         RemoveBackground(img);
-    })
+    });
 
     function RemoveBackground(dados) {
-        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {
-            console.log(res.data);
-        })
+        $.post(BASEURL + "/index/ImageBackgroundRemove", dados).then(res => {})
     }
 });

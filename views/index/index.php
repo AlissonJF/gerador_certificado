@@ -17,11 +17,17 @@
                             <label class="form-label" for="cpf">CPF*</label>
                         </div>
                     </div>
-                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Dê preferência em adicionar uma imagem <strong>PNG</strong>.</p>
+                    <p class="text-center"><strong>Adicione a imagem da assinatura</strong><br>Obs: Dê preferência em adicionar uma imagem <strong>JPG</strong>.</p>
                     <p></p>
                     <div class="col col-md-12 mb-3">
                         <div id="file">
                             <input id="receiveFile" type="file" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col col-md-12 mb-3">
+                        <label class="form-label" for="ajusteContraste"><strong>Ajuste de contraste</strong></label>
+                        <div class="range">
+                            <input type="range" class="form-range" min="100" max="200" id="ajusteContraste" />
                         </div>
                     </div>
                     <div class="form-outline text-center">

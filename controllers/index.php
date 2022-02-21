@@ -18,9 +18,4 @@ class Index extends Controller {
     {
         $this->model->ImageBackgroundRemove();
     }
-
-    function getDados()
-    {
-        $this->model->getDados();
-    }
 }

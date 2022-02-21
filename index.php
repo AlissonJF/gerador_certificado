@@ -4,7 +4,9 @@ require 'config.php';
 
 // funcao que carrega as classes automaticamente
 function __autoload($class) {
-    require LIBS . $class .".php";
+    if (strpos($class, 'Imagick') === false) {
+        require_once LIBS . $class .".php";
+    }
 }
 // carrega o bootstrap - inicializador
 $bootstrap = new Bootstrap();
