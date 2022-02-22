@@ -93,7 +93,6 @@ $(document).ready(function () {
 
     $(document).on("click", "#removeBackground", function (img) {
         event.preventDefault();
-        console.log(img)
         RemoveBackground(img);
     });
 
