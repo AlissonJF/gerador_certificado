@@ -18,9 +18,9 @@ class Gerador_Model extends Model
 
         // --------- Variáveis para gerar o certificado corretamente --------- //
 
-        $email = $_POST['email'];
-        $nome = utf8_decode(strtoupper($_POST['nome']));
-        $cpf = $_POST['cpf'];
+        $email = "alissonruan567@gmail.com";
+        $nome = "Alisson Juan Feitoza da Silva";
+        $cpf = "490.665.548-35";
         $ass = intval($_POST['selectAss1']);
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
@@ -46,30 +46,30 @@ class Gerador_Model extends Model
             FROM
                 assinaturas a
             WHERE
-                a.sequencia = :ass',array(":ass"=>$ass));
+                a.sequencia = :ass', array(":ass" => $ass));
 
         $nomesassinaturas2 = $this->db->select('SELECT
                 *
             FROM
                 assinaturas a
             WHERE
-                a.sequencia = :ass',array(":ass"=>$ass2));
+                a.sequencia = :ass', array(":ass" => $ass2));
 
         $nomesassinaturas3 = $this->db->select('SELECT
                 *
             FROM
                 assinaturas a
             WHERE
-                a.sequencia = :ass',array(":ass"=>$ass3));
+                a.sequencia = :ass', array(":ass" => $ass3));
 
         $alunos = $this->db->select("SELECT
                 *
             FROM
                 alunos a
             WHERE
-                a.cpf = :cpf",array(":cpf"=>$cpf));
+                a.cpf = :cpf", array(":cpf" => $cpf));
 
-        if($alunos != null) {
+        if ($alunos != null) {
             $nome = utf8_decode($alunos[0]->nome);
         }
 
@@ -80,7 +80,7 @@ class Gerador_Model extends Model
             JOIN assinaturas a ON
                 p.assinatura = a.sequencia
             WHERE
-                p.assinatura = :ass',array(":ass"=>$ass));
+                p.assinatura = :ass', array(":ass" => $ass));
 
         // --------- Limites de movimentação da Assinatura --------- //
 
@@ -93,16 +93,16 @@ class Gerador_Model extends Model
 
         // --------- Assinaturas Disponíveis (pode ser alterado através de um banco de dados) --------- //
         $assinaturas = [
-            'public/images/assinaturaTercilio.gif',
+            'public/images/assinaturaAlisson.png',
             'public/images/assinaturaMauroAudi.gif',
-            'public/images/assinaturaMinardi.gif'
+            'public/images/assinaturaMinardi.gif',
         ];
 
         // --------- Variáveis do Formulário ----- //
-        if ($_POST['email'] == null
-            || $_POST['nome'] == null
-            || $_POST['cpf'] == null
-            || $_POST['selectAss1'] == 0) {
+        if ($email == null
+            || $nome == null
+            || $cpf == null
+            || $ass == 0) {
             exit;
         } else {
 
@@ -160,11 +160,11 @@ class Gerador_Model extends Model
                 $X2 = 210;
                 $Y2 = 140;
                 // ------ Movimentação Individual ------
-                if($move == 1) {
+                if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
                 }
-                if($move == 2) {
+                if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
                 }
@@ -186,7 +186,7 @@ class Gerador_Model extends Model
                     $ass3 = $assinaturas[2];
                 }
                 // ------ Movimentação Individual ------
-                if($move == 3) {
+                if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
                 }
@@ -206,11 +206,11 @@ class Gerador_Model extends Model
                     $ass3 = $assinaturas[2];
                 }
                 // ------ Movimentação Individual ------
-                if($move == 1) {
+                if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
                 }
-                if($move == 3) {
+                if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
                 }
@@ -256,9 +256,9 @@ class Gerador_Model extends Model
                 "posicaoY2" => $Y2,
                 "posicaoY3" => $Y3,
                 "move" => $move,
-                "nomeassinatura"=> $nomesassinaturas,
-                "nomeassinatura2"=> $nomesassinaturas2,
-                "nomeassinatura3"=> $nomesassinaturas3,
+                "nomeassinatura" => $nomesassinaturas,
+                "nomeassinatura2" => $nomesassinaturas2,
+                "nomeassinatura3" => $nomesassinaturas3,
                 "tamanho" => $T,
                 "qntAss" => $qntsAss,
                 "aluno" => $alunos,
@@ -293,7 +293,7 @@ class Gerador_Model extends Model
             JOIN alunos a2 ON
                 p.aluno = a2.sequencia
             WHERE
-                a2.cpf = :ass', array(":ass"=>$aluno[0]->cpf));
+                a2.cpf = :ass', array(":ass" => $aluno[0]->cpf));
 
         $dados = [
             'aluno' => $aluno[0]->sequencia,

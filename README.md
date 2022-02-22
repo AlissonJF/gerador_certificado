@@ -12,7 +12,6 @@ Nesse projeto será gerado um certificado (que servirá apenas para estudo no mo
 
 ## Créditos
 
-* <a href="https://github.com/AlissonJF" target="_blank">Alisson JF</a>
 * <a href="https://github.com/PHPMailer/PHPMailer" target="_blank">PHPMailer</a>
 * <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>
 * <a href="http://mdbootstrap.com/" target="_blank">MDBootstrap</a>

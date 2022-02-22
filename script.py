@@ -6,20 +6,9 @@ from skimage.measure import regionprops
 import numpy as np
 from PIL import Image
 
-# import json
-# import sys
-# from sinesp_client import SinespClient
-#
-# # Recebendo a imagem
-# sc = SinespClient()
-# img = sys.argv[1]
-# result = sc.search(img)
-# json_result = json.dumps(result)
-# print(json_result)
-
 # paths
 inputpath = 'test/ass_test.jpeg'
-outputpath = 'test/output.png'
+outputpath = 'test/assinatura.png'
 
 # the parameters are used to remove small size connected pixels outliar
 constant_parameter_1 = 84
@@ -114,5 +103,4 @@ for item in datas:
 
 img.putdata(newData)
 img.save(outputpath)
-
 

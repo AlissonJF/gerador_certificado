@@ -7,7 +7,7 @@
                     <div class="form-outline">
                         <select id="selectAss1" name="selectAss1" class="btn btn-default col-md-12">
                             <option value="0" selected>Selecione o tipo de Assinatura*</option>
-                            <option value="1">Coordenador(a) X Engenharia</option>
+                            <option value="1">Minha Assinatura</option>
                             <option value="2">Coordenador(a) X Fisioterapia</option>
                             <option value="3">Professor(a) X ADS</option>
                         </select>
