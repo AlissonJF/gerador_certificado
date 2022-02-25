@@ -20,11 +20,14 @@ class Gerador_Model extends Model
 
         $email = "alissonruan567@gmail.com";
         $nome = "Alisson Juan Feitoza da Silva";
-        $cpf = "490.665.548-35";
+        $cpf = "353.747.098.36";
         $ass = intval($_POST['selectAss1']);
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
         $qntsAss = 1;
+        $printAss = "";
+        $printAss2 = "";
+        $printAss3 = "";
 
         $move = intval($_POST['AssMove']);
 
@@ -41,33 +44,12 @@ class Gerador_Model extends Model
 
         // --------- SCRIPT do Banco de Dados --------- //
 
-        $nomesassinaturas = $this->db->select('SELECT
-                *
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass));
-
-        $nomesassinaturas2 = $this->db->select('SELECT
-                *
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass2));
-
-        $nomesassinaturas3 = $this->db->select('SELECT
-                *
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass3));
-
-        $alunos = $this->db->select("SELECT
+        $alunos = $this->db->select('SELECT
                 *
             FROM
                 alunos a
             WHERE
-                a.cpf = :cpf", array(":cpf" => $cpf));
+                a.cpf = :cpf', array(":cpf" => $cpf));
 
         if ($alunos != null) {
             $nome = utf8_decode($alunos[0]->nome);
@@ -82,21 +64,32 @@ class Gerador_Model extends Model
             WHERE
                 p.assinatura = :ass', array(":ass" => $ass));
 
-        // --------- Limites de movimentação da Assinatura --------- //
+        $assinaturas = $this->db->select('
+            SELECT
+                sequencia,
+                caminho
+            FROM
+                assinaturas a
+            WHERE
+                a.sequencia = :ass', array(":ass" => $ass));
 
-        // if ($X < 20 || $X > 220) {
-        //     $X = 120; // --------- Caso o limite for ultrapassado, será centralizado
-        // }
-        // if ($Y < 130 || $Y > 160) {
-        //     $Y = 140; // --------- Caso o limite for ultrapassado, será centralizado
-        // }
+        $assinaturas2 = $this->db->select('
+            SELECT
+                sequencia,
+                caminho caminho2
+            FROM
+                assinaturas a
+            WHERE
+                a.sequencia = :ass', array(":ass" => $ass2));
 
-        // --------- Assinaturas Disponíveis (pode ser alterado através de um banco de dados) --------- //
-        $assinaturas = [
-            'public/images/assinaturaAlisson.png',
-            'public/images/assinaturaMauroAudi.gif',
-            'public/images/assinaturaMinardi.gif',
-        ];
+        $assinaturas3 = $this->db->select('
+            SELECT
+                sequencia,
+                caminho caminho3
+            FROM
+                assinaturas a
+            WHERE
+                a.sequencia = :ass', array(":ass" => $ass3));
 
         // --------- Variáveis do Formulário ----- //
         if ($email == null
@@ -117,15 +110,9 @@ class Gerador_Model extends Model
             $texto3 = utf8_decode("de " . $data . ", promovido pelo(a) " . $descricao . $carga_h . ".");
 
             // --------- Teste de assinaturas --------- //
-            if ($ass == "1") {
-                $ass = $assinaturas[0];
-            }
-            if ($ass == "2") {
-                $ass = $assinaturas[1];
-            }
-            if ($ass == "3") {
-                $ass = $assinaturas[2];
-            }
+            $printAss = $assinaturas[0]->caminho;
+            $printAss2 = $assinaturas2[0]->caminho2;
+            $printAss3 = $assinaturas3[0]->caminho3;
 
             $pdf = new AlphaPDF();
 
@@ -138,24 +125,15 @@ class Gerador_Model extends Model
             $pdf->Image('public/images/certificado.jpg', 0, 0, 295);
 
             // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
-            if ($ass2 == "0" && $ass3 == "0") {
+            if ($ass2 == 0 && $ass3 == 0) {
                 // ------ Movimentação Individual ------
                 $X = intval($_POST['posicaoX']);
-                $pdf->Image($ass, $X, $Y, $T);
+                $pdf->Image($printAss, $X, $Y, $T);
             } else {
                 $X = 20;
                 $Y = 140;
             }
-            if ($ass2 != "0") {
-                if ($ass2 == "1") {
-                    $ass2 = $assinaturas[0];
-                }
-                if ($ass2 == "2") {
-                    $ass2 = $assinaturas[1];
-                }
-                if ($ass2 == "3") {
-                    $ass2 = $assinaturas[2];
-                }
+            if ($ass2 != 0) {
                 $qntsAss += 1;
                 $X2 = 210;
                 $Y2 = 140;
@@ -169,42 +147,24 @@ class Gerador_Model extends Model
                     $Y2 = intval($_POST['posicaoY2']);
                 }
 
-                $pdf->Image($ass, $X, $Y, $T);
-                $pdf->Image($ass2, $X2, $Y2, $T);
+                $pdf->Image($printAss, $X, $Y, $T);
+                $pdf->Image($printAss2, $X2, $Y2, $T);
             }
-            if ($ass2 != "0" && $ass3 != "0") {
+            if ($ass2 != 0 && $ass3 != 0) {
                 $X3 = 120;
                 $Y3 = 140;
                 $qntsAss += 1;
-                if ($ass3 == "1") {
-                    $ass3 = $assinaturas[0];
-                }
-                if ($ass3 == "2") {
-                    $ass3 = $assinaturas[1];
-                }
-                if ($ass3 == "3") {
-                    $ass3 = $assinaturas[2];
-                }
                 // ------ Movimentação Individual ------
                 if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
                 }
-                $pdf->Image($ass3, $X3, $Y3, $T);
+                $pdf->Image($printAss3, $X3, $Y3, $T);
             }
-            if ($ass3 != "0" && $ass2 == "0") {
+            if ($ass3 != 0 && $ass2 == 0) {
                 $X3 = 210;
                 $Y3 = 140;
                 $qntsAss += 1;
-                if ($ass3 == "1") {
-                    $ass3 = $assinaturas[0];
-                }
-                if ($ass3 == "2") {
-                    $ass3 = $assinaturas[1];
-                }
-                if ($ass3 == "3") {
-                    $ass3 = $assinaturas[2];
-                }
                 // ------ Movimentação Individual ------
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
@@ -214,8 +174,8 @@ class Gerador_Model extends Model
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
                 }
-                $pdf->Image($ass, $X, $Y, $T);
-                $pdf->Image($ass3, $X3, $Y3, $T);
+                $pdf->Image($printAss, $X, $Y, $T);
+                $pdf->Image($printAss3, $X3, $Y3, $T);
             }
 
             // opacidade total
@@ -256,15 +216,22 @@ class Gerador_Model extends Model
                 "posicaoY2" => $Y2,
                 "posicaoY3" => $Y3,
                 "move" => $move,
-                "nomeassinatura" => $nomesassinaturas,
-                "nomeassinatura2" => $nomesassinaturas2,
-                "nomeassinatura3" => $nomesassinaturas3,
                 "tamanho" => $T,
                 "qntAss" => $qntsAss,
                 "aluno" => $alunos,
                 "arquivo" => "data:application/pdf;base64," . base64_encode($pdfdoc)
             ]);
         }
+    }
+
+    public function selectAssinatura()
+    {
+        $sql = $this->db->select("
+            SELECT
+                *
+            FROM
+                assinaturas a");
+        echo json_encode($sql);
     }
 
     public function savePosition()

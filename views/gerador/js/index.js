@@ -16,6 +16,20 @@ $(document).ready(function () {
         updateCertificado(this);
     });
 
+    function selectAssinatura()
+    {
+        getUrl(BASEURL + "/gerador/selectAssinatura").then(res => {
+            var txt = "<option selected disabled>Selecione a Assinatura*</option>";
+
+            res.data.forEach(element => {
+                txt += `<option value="${element.sequencia}">${element.nomeassinatura}</option>`
+            })
+            $("#selectAss1").html(txt);
+            $("#selectAss2").html(txt);
+            $("#selectAss3").html(txt);
+        })
+    } selectAssinatura()
+
     function updateCertificado(dados) {
         $.post(BASEURL + "/gerador/gerador", `${$(dados).serialize()}
         &posicaoX=${posicaoX}&posicaoY=${posicaoY}
@@ -34,9 +48,6 @@ $(document).ready(function () {
                 tamanho = parseInt(data.tamanho);
                 let qntAss = parseInt(data.qntAss);
                 let aluno = data.aluno;
-                let nomeassinatura = data.nomeassinatura;
-                let nomeassinatura2 = data.nomeassinatura2;
-                let nomeassinatura3 = data.nomeassinatura3;
                 $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="650">`);
                 $("#posicaoX").val(posicaoX + 'px');
                 $("#posicaoY").val(posicaoY + 'px');
@@ -62,14 +73,11 @@ $(document).ready(function () {
 
                 const positions = {
                     "Ass": [posicaoX,
-                        posicaoY,
-                        nomeassinatura[0]],
+                        posicaoY],
                     "Ass2": [posicaoX2,
-                        posicaoY2,
-                        nomeassinatura2[0]],
+                        posicaoY2],
                     "Ass3": [posicaoX3,
-                        posicaoY3,
-                        nomeassinatura3[0]],
+                        posicaoY3],
                     "tamanho": [tamanho],
                     "aluno": [aluno[0]],
                 };

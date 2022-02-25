@@ -5,32 +5,17 @@
                 <div class="col-md-12 mb-3">
                     <p><strong>Assinaturas</strong></p>
                     <div class="form-outline">
-                        <select id="selectAss1" name="selectAss1" class="btn btn-default col-md-12">
-                            <option value="0" selected>Selecione o tipo de Assinatura*</option>
-                            <option value="1">Minha Assinatura</option>
-                            <option value="2">Coordenador(a) X Fisioterapia</option>
-                            <option value="3">Professor(a) X ADS</option>
-                        </select>
+                        <select id="selectAss1" name="selectAss1" class="btn btn-default col-md-12"></select>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-outline">
-                        <select id="selectAss2" name="selectAss2" class="btn btn-default col-md-12">
-                            <option value="0" selected>Selecione o tipo de Assinatura</option>
-                            <option value="1">Coordenador(a) X Engenharia</option>
-                            <option value="2">Coordenador(a) X Fisioterapia</option>
-                            <option value="3">Professor(a) X ADS</option>
-                        </select>
+                        <select id="selectAss2" name="selectAss2" class="btn btn-default col-md-12"></select>
                     </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <div class="form-outline">
-                        <select id="selectAss3" name="selectAss3" class="btn btn-default col-md-12">
-                            <option value="0" selected>Selecione o tipo de Assinatura</option>
-                            <option value="1">Coordenador(a) X Engenharia</option>
-                            <option value="2">Coordenador(a) X Fisioterapia</option>
-                            <option value="3">Professor(a) X ADS</option>
-                        </select>
+                        <select id="selectAss3" name="selectAss3" class="btn btn-default col-md-12"></select>
                     </div>
                 </div>
 

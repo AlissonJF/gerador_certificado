@@ -20,6 +20,11 @@ class Gerador extends Controller {
         $this->model->gerador();
     }
 
+    function selectAssinatura()
+    {
+        $this->model->selectAssinatura();
+    }
+
     function savePosition()
     {
         $this->model->savePosition();
