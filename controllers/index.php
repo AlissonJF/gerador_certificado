@@ -18,4 +18,9 @@ class Index extends Controller {
     {
         $this->model->ImageBackgroundRemove();
     }
+
+    function GeraCertificado()
+    {
+        $this->model->GeraCertificado();
+    }
 }

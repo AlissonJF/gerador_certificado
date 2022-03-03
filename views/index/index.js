@@ -69,7 +69,13 @@ $(document).ready(function () {
     });
 
     $(document).on("click", "#GeraCerti", function () {
-        $("#InfoCertificado").submit()
+        var infos = $("#InfoCertificado").submit()
+        $.post(BASEURL + "/index/GeraCertificado", `${$(infos).serialize()}`)
+            .then(res => {
+                if (res) {
+                    window.location.href = BASEURL + "/gerador/index";
+                }
+            })
     });
 
     function readURL(input) {
@@ -83,6 +89,11 @@ $(document).ready(function () {
         }
     }
 
+    function RemoveBackground(dados) {
+        console.log(dados)
+        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {})
+    }
+
     $("#receiveFile").change(function () {
         readURL(this);
     });
@@ -93,10 +104,6 @@ $(document).ready(function () {
 
     $(document).on("click", "#removeBackground", function (img) {
         event.preventDefault();
-        RemoveBackground(img);
+        RemoveBackground(img.target.form);
     });
-
-    function RemoveBackground(dados) {
-        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {})
-    }
 });

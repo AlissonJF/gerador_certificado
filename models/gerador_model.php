@@ -20,7 +20,7 @@ class Gerador_Model extends Model
 
         $email = "alissonruan567@gmail.com";
         $nome = "Alisson Juan Feitoza da Silva";
-        $cpf = "353.747.098.36";
+        $cpf = "490.665.548-35";
         $ass = intval($_POST['selectAss1']);
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
@@ -91,6 +91,21 @@ class Gerador_Model extends Model
             WHERE
                 a.sequencia = :ass', array(":ass" => $ass3));
 
+        $InfoTopCertificado = $this->db->select("
+            SELECT
+                e.sequencia,
+                e.nome evento,
+                e.ch,
+                DATE_FORMAT(e.dataentrada, '%d/%m/%Y') AS dataentrada,
+                DATE_FORMAT(e.datafinal, '%d/%m/%Y') AS datafinal,
+                e.descricao
+            FROM
+                evento e
+            JOIN alunos a ON
+                e.aluno = a.cpf
+            WHERE
+                e.aluno = :cpf", array(":cpf" => $cpf));
+
         // --------- Variáveis do Formulário ----- //
         if ($email == null
             || $nome == null
@@ -101,10 +116,10 @@ class Gerador_Model extends Model
 
             // --------- Variáveis que podem vir de um banco de dados por exemplo ----- //
             $infoTop = "A Universidade de Marília - UNIMAR, nos termos do artigo 111, parágrafo 1°\ndo seu Regimento Geral, certifica que";
-            $curso = utf8_decode("SEMINÁRIO DE INICIAÇÃO CIENTÍFICA - SEMIC 2021");
-            $data = utf8_decode(" 08/09/2021 a 10/09/2021 ");
-            $carga_h = " com carga horária total de 4(quatro) horas";
-            $descricao = "Nucleo Intergrado de Pesquisa e Extenção da Universidade de Marília";
+            $curso = utf8_decode($InfoTopCertificado[0]->evento);
+            $data = utf8_decode(" " . $InfoTopCertificado[0]->dataentrada . " a " . $InfoTopCertificado[0]->datafinal);
+            $carga_h = " com carga horária total de " . $InfoTopCertificado[0]->ch . " horas";
+            $descricao = $InfoTopCertificado[0]->descricao;
             $texto1 = utf8_decode($infoTop);
             $texto2 = utf8_decode("participou como ouvinte do\n ");
             $texto3 = utf8_decode("de " . $data . ", promovido pelo(a) " . $descricao . $carga_h . ".");

@@ -38,7 +38,7 @@
                         <img id="printImage" src="" style="border-radius: 5px; box-shadow: 6px 6px 8px" width="600"
                              height="400" alt="Adicione uma imagem"/>
                         <br><br>
-                        <button type="button" id="removeBackground" class="btn btn-default">Remover Fundo</button>
+                        <button type="button" id="removeBackground" class="btn btn-default">Gravar Assinatura</button>
                     </div>
                 </div>
             </div>

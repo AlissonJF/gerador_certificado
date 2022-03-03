@@ -10,25 +10,43 @@ class Index_Model extends Model
     public function ImageBackgroundRemove()
     {
         $img = json_decode(file_get_contents('php://input'));
-        $cmdResult = shell_exec($img);
-        $result = json_decode($cmdResult);
-        print_r($result);
-
-        //if ($result) {
-        //    Session::init();
-        //    Session::set('nome');
-        //    Session::set('email');
-        //    Session::set('cpf');
-        //    Session::set('entrou', true);
-        //    echo "OK";
-        //} else {
-        //    echo "Dados Incorretos.";
-        //}
+        var_dump($img);
+        exit;
+        // $cmdResult = shell_exec($img);
+        // $result = json_decode($cmdResult);
+        // print_r($result);
     }
 
     public function GeraCertificado()
     {
-        $dados = json_decode(file_get_contents('php://input'));
-        var_dump($dados);
+        $cpf = $_POST['cpf']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
+        $email = $_POST['email']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
+        $msg = "";
+
+        $result = $this->db->select("
+            SELECT
+                nome,
+                email,
+                cpf
+            FROM
+                alunos a
+            WHERE
+                email = :email
+                AND cpf = :cpf",
+            array(
+                ":cpf" => $cpf,
+                ":email" => $email
+            ));
+
+        if ($result) {
+            Session::init();
+            Session::set('nome', $result[0]->nome);
+            Session::set('email', $result[0]->email);
+            Session::set('cpf', $result[0]->cpf);
+            $msg = true;
+        } else {
+            $msg = false;
+        }
+        echo json_encode($msg);
     }
 }
