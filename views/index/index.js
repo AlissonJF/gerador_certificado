@@ -70,10 +70,12 @@ $(document).ready(function () {
 
     $(document).on("click", "#GeraCerti", function () {
         var infos = $("#InfoCertificado").submit()
-        $.post(BASEURL + "/index/GeraCertificado", `${$(infos).serialize()}`)
+        axios.post(BASEURL + "/index/GeraCertificado", `${$(infos).serialize()}`)
             .then(res => {
-                if (res) {
+                if (res.data.codigo == "1") {
                     window.location.href = BASEURL + "/gerador/index";
+                } else {
+                    swal("", res.data.texto, "error")
                 }
             })
     });

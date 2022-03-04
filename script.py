@@ -7,8 +7,8 @@ import numpy as np
 from PIL import Image
 
 # paths
-inputpath = 'test/ass_test.jpeg'
-outputpath = 'test/assinatura.png'
+inputpath = 'test/ass2.jpeg'
+outputpath = 'public/images/assinatura.png'
 
 # the parameters are used to remove small size connected pixels outliar
 constant_parameter_1 = 84
@@ -19,7 +19,7 @@ constant_parameter_3 = 100
 constant_parameter_4 = 18
 
 # contrast adjustment
-contrast = 150
+contrast = 115
 
 # read the input image
 img = cv2.imread(inputpath, 0)

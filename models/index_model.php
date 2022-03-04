@@ -43,9 +43,9 @@ class Index_Model extends Model
             Session::set('nome', $result[0]->nome);
             Session::set('email', $result[0]->email);
             Session::set('cpf', $result[0]->cpf);
-            $msg = true;
+            $msg = array("codigo" => 1, "texto" => "OK");
         } else {
-            $msg = false;
+            $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");
         }
         echo json_encode($msg);
     }

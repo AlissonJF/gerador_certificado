@@ -18,9 +18,9 @@ class Gerador_Model extends Model
 
         // --------- Variáveis para gerar o certificado corretamente --------- //
 
-        $email = "alissonruan567@gmail.com";
-        $nome = "Alisson Juan Feitoza da Silva";
-        $cpf = "490.665.548-35";
+        $email = $_SESSION['email'];
+        $nome = $_SESSION['nome'];
+        $cpf = $_SESSION['cpf'];
         $ass = intval($_POST['selectAss1']);
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
@@ -293,6 +293,8 @@ class Gerador_Model extends Model
             $result = $this->db->update("asscertificado.posicaotamanho", $dados, "aluno='$aluno'");
             $msg = array("codigo" => 1, "texto" => "Atualizado com sucesso.");
         }
+
+        Session::destroy();
 
         echo json_encode($msg);
     }
