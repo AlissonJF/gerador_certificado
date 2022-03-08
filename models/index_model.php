@@ -9,12 +9,9 @@ class Index_Model extends Model
 
     public function ImageBackgroundRemove()
     {
-        $img = json_decode(file_get_contents('php://input'));
+        $file = $_FILES['IMGFile'];
+        $img = $file['tmp_name'];
         var_dump($img);
-        exit;
-        // $cmdResult = shell_exec($img);
-        // $result = json_decode($cmdResult);
-        // print_r($result);
     }
 
     public function GeraCertificado()
@@ -43,6 +40,7 @@ class Index_Model extends Model
             Session::set('nome', $result[0]->nome);
             Session::set('email', $result[0]->email);
             Session::set('cpf', $result[0]->cpf);
+            Session::set('logado', true);
             $msg = array("codigo" => 1, "texto" => "OK");
         } else {
             $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");

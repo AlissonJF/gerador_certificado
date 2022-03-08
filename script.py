@@ -8,7 +8,7 @@ from PIL import Image
 
 # paths
 inputpath = 'test/ass2.jpeg'
-outputpath = 'public/images/assinatura.png'
+outputpath = 'test/assinatura.png'
 
 # the parameters are used to remove small size connected pixels outliar
 constant_parameter_1 = 84

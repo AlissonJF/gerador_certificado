@@ -85,9 +85,9 @@ $(document).ready(function () {
                 $(document).on("click", "#SalvarDados", function () {
                     axios.post(BASEURL + "/gerador/savePosition", positions).then(res => {
                         if (res.data.codigo == "1") {
-                            swal(":)",res.data.texto, "success");
+                            swal("",res.data.texto, "success");
                         } else {
-                            swal(":/", res.data.texto, "error")
+                            swal("", res.data.texto, "error")
                         }
                     });
                 })

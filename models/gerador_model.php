@@ -7,6 +7,7 @@ class Gerador_Model extends Model
     {
         parent::__construct();
         Session::init();
+        Auth::autentica();
     }
 
     public function gerador()

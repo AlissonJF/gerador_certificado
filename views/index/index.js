@@ -8,6 +8,8 @@ function formatar(mascara, documento) {
 }
 
 $(document).ready(function () {
+    var imgFile = $('#receiveFile')
+    var contrast = $('#ajusteContraste')
     $('#InfoCertificado').bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
@@ -92,8 +94,15 @@ $(document).ready(function () {
     }
 
     function RemoveBackground(dados) {
-        console.log(dados)
-        $.post(BASEURL + "/index/ImageBackgroundRemove", `${$(dados).serialize()}`).then(res => {})
+        var formData = new FormData();
+
+        formData.append("IMGFile", $('#receiveFile')[0].files[0]);
+
+        axios.post(BASEURL + "/index/ImageBackgroundRemove", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 
     $("#receiveFile").change(function () {
