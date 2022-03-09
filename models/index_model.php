@@ -11,14 +11,16 @@ class Index_Model extends Model
     {
         $file = $_FILES['IMGFile'];
         $img = $file['tmp_name'];
-        var_dump($img);
+        $command = escapeshellcmd('python views/index/script.py');
+        $output = shell_exec($command);
+        echo $output;
     }
 
     public function GeraCertificado()
     {
         $cpf = $_POST['cpf']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
         $email = $_POST['email']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
-        $msg = "";
+        $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");
 
         $result = $this->db->select("
             SELECT
@@ -42,8 +44,6 @@ class Index_Model extends Model
             Session::set('cpf', $result[0]->cpf);
             Session::set('logado', true);
             $msg = array("codigo" => 1, "texto" => "OK");
-        } else {
-            $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");
         }
         echo json_encode($msg);
     }
