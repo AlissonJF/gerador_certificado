@@ -287,13 +287,13 @@ class Gerador_Model extends Model
         $aluno = $aluno[0]->sequencia;
         $msg = array("codigo" => 0, "texto" => "Falha ao salvar.");
 
-        if ($aluno == null) {
-            $result = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            $msg = array("codigo" => 1, "texto" => "Adicionado com sucesso.");
-        } else {
-            $result = $this->db->update("asscertificado.posicaotamanho", $dados, "aluno='$aluno'");
-            $msg = array("codigo" => 1, "texto" => "Atualizado com sucesso.");
-        }
+//        if ($aluno == null) {
+////            $result = $this->db->insert("asscertificado.posicaotamanho", $dados);
+//            $msg = array("codigo" => 1, "texto" => "Adicionado com sucesso.");
+//        } else {
+////            $result = $this->db->update("asscertificado.posicaotamanho", $dados, "aluno='$aluno'");
+//            $msg = array("codigo" => 1, "texto" => "Atualizado com sucesso.");
+//        }
 
         Session::destroy();
 

@@ -7,7 +7,7 @@ import numpy as np
 from PIL import Image
 
 # paths
-inputpath = 'test/ass2.jpeg'
+inputpath = 'test/assinatura.jpeg'
 outputpath = 'test/assinatura.png'
 
 # the parameters are used to remove small size connected pixels outliar
