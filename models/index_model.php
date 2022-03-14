@@ -12,10 +12,12 @@ class Index_Model extends Model
         // Faz a busca da imagem e o nível de contraste
         $file = $_FILES['IMGFile'];
         $img = $file['tmp_name'];
-        $contrast = $_POST['contrast'];
+        $recebe_contrast = $_POST['contrast'];
 
         // Manda a imagem renomeada para outra pasta e ativa o script em Python
+        $file_contrast = fopen('test/contrast.txt', 'w');
         $assinatura = rename($img, 'test/assinatura.jpeg');
+        $contrast = file_put_contents('test/contrast.txt', $recebe_contrast);
         $command = escapeshellcmd('python views/index/script.py');
         $output = shell_exec($command);
 

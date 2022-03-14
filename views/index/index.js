@@ -97,7 +97,7 @@ $(document).ready(function () {
         var formData = new FormData();
 
         formData.append("IMGFile", $('#receiveFile')[0].files[0]);
-        formData.append("contrast", contrast);
+        formData.append("contrast", contrast[0].value);
 
         axios.post(BASEURL + "/index/ImageBackgroundRemove", formData, {
             headers: {

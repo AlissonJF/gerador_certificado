@@ -19,7 +19,9 @@ constant_parameter_3 = 100
 constant_parameter_4 = 18
 
 # contrast adjustment
-contrast = 115
+str = open('../../test/contrast.txt', 'r').read()
+contrast = int(str)
+
 
 # read the input image
 img = cv2.imread(inputpath, 0)
