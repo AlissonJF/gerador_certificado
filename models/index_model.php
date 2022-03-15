@@ -15,20 +15,27 @@ class Index_Model extends Model
         $recebe_contrast = $_POST['contrast'];
 
         // Manda a imagem renomeada para outra pasta e ativa o script em Python
-        $file_contrast = fopen('test/contrast.txt', 'w');
-        $assinatura = rename($img, 'test/assinatura.jpeg');
-        $contrast = file_put_contents('test/contrast.txt', $recebe_contrast);
+        $file_contrast = fopen('public/images/contrast.txt', 'w');
+        $assinatura = rename($img, 'public/images/assinatura.jpeg');
+        $contrast = file_put_contents('public/images/contrast.txt', $recebe_contrast);
         $command = escapeshellcmd('python views/index/script.py');
         $output = shell_exec($command);
 
         // transforma a imagem sem fundo em base64
         header('Content-type:image/png');
-        $searchIMG = 'test/assinatura.png';
+        $searchIMG = 'public/images/assinatura.png';
         $type = pathinfo($searchIMG, PATHINFO_EXTENSION);
         $data = file_get_contents($searchIMG);
         $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
         echo json_encode($base64);
+    }
+
+    public function saveImage()
+    {
+        $name = $_POST['nomeImage'];
+
+
     }
 
     public function GeraCertificado()

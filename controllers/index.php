@@ -23,4 +23,9 @@ class Index extends Controller {
     {
         $this->model->GeraCertificado();
     }
+
+    function saveImage()
+    {
+        $this->model->saveImage();
+    }
 }

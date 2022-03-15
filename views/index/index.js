@@ -82,6 +82,36 @@ $(document).ready(function () {
             })
     });
 
+    $(document).on("click", "#removeBackground", function () {
+        var infos = $("#InfoCertificado").submit()
+        axios.post(BASEURL + "/index/saveImage", `${$(infos).serialize()}`)
+            .then(res => {
+                console.log(res.data);
+            })
+    });
+
+    $("#receiveFile").change(function () {
+        readURL(this);
+    });
+
+    $(document).on("change", "#receiveFile", function (event) {
+        RemoveBackground();
+    });
+
+    $(document).on("change", "#ajusteContraste", function (event) {
+        RemoveBackground();
+    });
+
+    $(document).on("submit", "#InfoCertificado", function (event) {
+        event.preventDefault();
+    });
+
+    function saveImage(dados) {
+        axios.post(BASEURL + "/index/saveImage", dados).then(response => {
+            console.log(response.data)
+        })
+    }
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -93,7 +123,7 @@ $(document).ready(function () {
         }
     }
 
-    function RemoveBackground(dados) {
+    function RemoveBackground() {
         var formData = new FormData();
 
         formData.append("IMGFile", $('#receiveFile')[0].files[0]);
@@ -107,17 +137,4 @@ $(document).ready(function () {
             $('#printImage').attr('src', response.data)
         })
     }
-
-    $("#receiveFile").change(function () {
-        readURL(this);
-    });
-
-    $(document).on("submit", "#InfoCertificado", function (event) {
-        event.preventDefault();
-    });
-
-    $(document).on("click", "#removeBackground", function (img) {
-        event.preventDefault();
-        RemoveBackground(img.target.form);
-    });
 });
