@@ -34,8 +34,31 @@ class Index_Model extends Model
     public function saveImage()
     {
         $name = $_POST['nomeImage'];
+        $searchIMG = 'public/images/assinatura.png';
+        rename($searchIMG, 'public/images/' . $name . '.png');
+        $caminhoIMG = 'public/images/' . $name . '.png';
 
+        $dados = [
+            'nomeassinatura' => strtoupper($name),
+            'caminho' => $caminhoIMG
+        ];
 
+        $sql = $this->db->select("
+            SELECT
+                *
+            FROM
+                assinaturas a
+            WHERE
+                caminho = :caminho
+        ", array(":caminho" => $caminhoIMG));
+
+        $msg = array("codigo" => 0, "texto" => "Falha ao tentar salvar.");
+        if ($name) {
+            $result = $this->db->insert('asscertificado.assinaturas', $dados);
+            $msg = array("codigo" => 1, "texto" => "Salvo com sucesso.");
+        }
+
+        echo json_encode($msg);
     }
 
     public function GeraCertificado()

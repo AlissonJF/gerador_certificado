@@ -86,7 +86,11 @@ $(document).ready(function () {
         var infos = $("#InfoCertificado").submit()
         axios.post(BASEURL + "/index/saveImage", `${$(infos).serialize()}`)
             .then(res => {
-                console.log(res.data);
+                if (res.data.codigo = "1") {
+                    swal("", res.data.texto, "success")
+                } else {
+                    swal("", res.data.texto, "error")
+                }
             })
     });
 

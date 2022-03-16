@@ -5,7 +5,6 @@ $(document).ready(function () {
     let posicaoY = 140; // MAX UP posicao Y = 130px MIN DOWN posicao Y = 150px
     let posicaoY2 = 140;
     let posicaoY3 = 140;
-    let tamanho = 60; // Tamanho padrão = 60px
 
     $(document).on("click", "#verCertificado", function () {
         $("#formCertificado").submit()
@@ -19,7 +18,7 @@ $(document).ready(function () {
     function selectAssinatura()
     {
         getUrl(BASEURL + "/gerador/selectAssinatura").then(res => {
-            var txt = "<option selected disabled>Selecione a Assinatura*</option>";
+            var txt = "";
 
             res.data.forEach(element => {
                 txt += `<option value="${element.sequencia}">${element.nomeassinatura}</option>`
@@ -45,7 +44,9 @@ $(document).ready(function () {
                 posicaoY = parseInt(data.posicaoY);
                 posicaoY2 = parseInt(data.posicaoY2);
                 posicaoY3 = parseInt(data.posicaoY3);
-                tamanho = parseInt(data.tamanho);
+                let tamanho = parseInt(data.tamanho);
+                let tamanho2 = parseInt(data.tamanho);
+                let tamanho3 = parseInt(data.tamanho);
                 let qntAss = parseInt(data.qntAss);
                 let aluno = data.aluno;
                 $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="650">`);
@@ -72,14 +73,26 @@ $(document).ready(function () {
                 $("#tamanho").val(tamanho + 'px');
 
                 const positions = {
-                    "Ass": [posicaoX,
-                        posicaoY],
-                    "Ass2": [posicaoX2,
-                        posicaoY2],
-                    "Ass3": [posicaoX3,
-                        posicaoY3],
-                    "tamanho": [tamanho],
-                    "aluno": [aluno[0]],
+                    "Ass": [
+                        posicaoX,
+                        posicaoY
+                    ],
+                    "Ass2": [
+                        posicaoX2,
+                        posicaoY2
+                    ],
+                    "Ass3": [
+                        posicaoX3,
+                        posicaoY3
+                    ],
+                    "tamanho": [
+                        tamanho,
+                        tamanho2,
+                        tamanho3
+                    ],
+                    "aluno": [
+                        aluno[0]
+                    ],
                 };
 
                 $(document).on("click", "#SalvarDados", function () {
