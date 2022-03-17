@@ -261,8 +261,12 @@ class Gerador_Model extends Model
     public function savePosition()
     {
         $posicoes = json_decode(file_get_contents('php://input'));
+        $tamanhos = $posicoes->tamanho;
+        $assinaturas = [$posicoes->Ass, $posicoes->Ass2, $posicoes->Ass3];
+        $aluno = $posicoes->aluno;
 
-        $sql = $this->db->select('SELECT
+        $sql = $this->db->select('
+            SELECT
                 p.sequencia,
                 p.posicaoX,
                 p.posicaoY,
@@ -279,10 +283,15 @@ class Gerador_Model extends Model
             JOIN alunos a2 ON
                 p.aluno = a2.sequencia
             WHERE
-                a2.cpf = :ass');
+                a2.sequencia = :seq
+        ', array(":seq" => $aluno[0]->sequencia));
 
         $dados = [
-
+            "assinatura" => $assinaturas,
+            "posicaoX" => $assinaturas,
+            "posicaoY" => $assinaturas,
+            "tamanho" => $tamanhos,
+            "aluno" => $aluno[0]->sequencia
         ];
         $msg = array("codigo" => 0, "texto" => "Falha ao salvar.");
 
@@ -294,7 +303,7 @@ class Gerador_Model extends Model
             $msg = array("codigo" => 1, "texto" => "Atualizado com sucesso.");
         }*/
 
-        Session::destroy();
+        // Session::destroy();
 
         echo json_encode($msg);
     }

@@ -35,7 +35,7 @@ $(document).ready(function () {
         &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}
         &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}`, function (data) {
             if (data == '') {
-                alert('Não foi possível gerar o PDF! Verifique se os campos obrigatórios(*) estão preenchidos.');
+                swal("",'Não foi possível gerar o PDF! Verifique se os campos obrigatórios(*) estão preenchidos.', "error");
             } else {
                 data = JSON.parse(data);
                 posicaoX = parseInt(data.posicaoX);
@@ -99,8 +99,9 @@ $(document).ready(function () {
                     axios.post(BASEURL + "/gerador/savePosition", positions).then(res => {
                         if (res.data.codigo == "1") {
                             swal("",res.data.texto, "success");
-                        } else {
-                            swal("", res.data.texto, "error")
+                        }
+                        if (res.data.codigo == "0") {
+                            swal("Oops", res.data.texto, "error")
                         }
                     });
                 })

@@ -87,10 +87,11 @@ $indexView = '
 
 if (!is_dir('views/' . $fileName)) {
     mkdir('views/' . $fileName);
+    mkdir('views/' . $fileName . '/js');
 }
 
 file_put_contents('views/' . $fileName . '/index.php', $indexView);
-file_put_contents('views/' . $fileName . '/index.js', '');
+file_put_contents('views/' . $fileName . '/js/index.js', '');
 file_put_contents('views/' . $fileName . '/index.css', '');
 
 function folder_exist($folder)
