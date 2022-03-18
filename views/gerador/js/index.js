@@ -18,7 +18,7 @@ $(document).ready(function () {
     function selectAssinatura()
     {
         getUrl(BASEURL + "/gerador/selectAssinatura").then(res => {
-            var txt = "";
+            var txt = ``;
 
             res.data.forEach(element => {
                 txt += `<option value="${element.sequencia}">${element.nomeassinatura}</option>`
@@ -35,7 +35,7 @@ $(document).ready(function () {
         &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}
         &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}`, function (data) {
             if (data == '') {
-                swal("",'Não foi possível gerar o PDF! Verifique se os campos obrigatórios(*) estão preenchidos.', "error");
+                swal("Oops",'Não foi possível continuar! Verifique se há alguma assinatura selecionada.', "error");
             } else {
                 data = JSON.parse(data);
                 posicaoX = parseInt(data.posicaoX);
@@ -45,8 +45,8 @@ $(document).ready(function () {
                 posicaoY2 = parseInt(data.posicaoY2);
                 posicaoY3 = parseInt(data.posicaoY3);
                 let tamanho = parseInt(data.tamanho);
-                let tamanho2 = parseInt(data.tamanho);
-                let tamanho3 = parseInt(data.tamanho);
+                let tamanho2 = parseInt(data.tamanho2);
+                let tamanho3 = parseInt(data.tamanho3);
                 let qntAss = parseInt(data.qntAss);
                 let aluno = data.aluno;
                 $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="650">`);

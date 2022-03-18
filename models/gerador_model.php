@@ -262,8 +262,10 @@ class Gerador_Model extends Model
     {
         $posicoes = json_decode(file_get_contents('php://input'));
         $tamanhos = $posicoes->tamanho;
-        $assinaturas = [$posicoes->Ass, $posicoes->Ass2, $posicoes->Ass3];
-        $aluno = $posicoes->aluno;
+        $posicaoX = [$posicoes->Ass[0], $posicoes->Ass2[0], $posicoes->Ass3[0]];
+        $posicaoY = [$posicoes->Ass[1], $posicoes->Ass2[1], $posicoes->Ass3[1]];
+        $al = $posicoes->aluno;
+        $aluno = $al[0]->sequencia;
 
         $sql = $this->db->select('
             SELECT
@@ -271,31 +273,32 @@ class Gerador_Model extends Model
                 p.posicaoX,
                 p.posicaoY,
                 p.tamanho,
-                a.sequencia as assinatura,
-                a.nomeassinatura,
-                a2.nome,
-                a2.email,
-                a2.cpf
+                a.nome,
+                a.email,
+                a.cpf
             FROM
                 posicaotamanho p
-            JOIN assinaturas a ON
-                p.assinatura = a.sequencia
-            JOIN alunos a2 ON
-                p.aluno = a2.sequencia
+            JOIN alunos a ON
+                p.aluno = a.sequencia
             WHERE
-                a2.sequencia = :seq
-        ', array(":seq" => $aluno[0]->sequencia));
+                a.sequencia = :seq
+        ', array(":seq" => $aluno));
 
         $dados = [
-            "assinatura" => $assinaturas,
-            "posicaoX" => $assinaturas,
-            "posicaoY" => $assinaturas,
-            "tamanho" => $tamanhos,
-            "aluno" => $aluno[0]->sequencia
+            "aluno" => $aluno,
+            "posicaoX" => $posicaoX[0],
+            "posicaoY" => $posicaoY[0],
+            "posicaoX2" => $posicaoX[1],
+            "posicaoY2" => $posicaoY[1],
+            "posicaoX3" => $posicaoX[2],
+            "posicaoY3" => $posicaoY[2],
+            "tamanho" => $tamanhos[0],
+            "tamanho2" => $tamanhos[1],
+            "tamanho3" => $tamanhos[2],
         ];
         $msg = array("codigo" => 0, "texto" => "Falha ao salvar.");
 
-        /*if ($aluno == null) {
+        /*if ($sql == null || $sql == "") {
             $result = $this->db->insert("asscertificado.posicaotamanho", $dados);
             $msg = array("codigo" => 1, "texto" => "Adicionado com sucesso.");
         } else {
