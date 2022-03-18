@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 03-Mar-2022 às 17:43
+-- Tempo de geração: 18-Mar-2022 às 18:04
 -- Versão do servidor: 10.4.14-MariaDB
 -- versão do PHP: 7.4.11
 
@@ -24,27 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `alunos`
---
-
-CREATE TABLE `alunos` (
-  `sequencia` int(11) NOT NULL,
-  `nome` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `cpf` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf32;
-
---
--- Extraindo dados da tabela `alunos`
---
-
-INSERT INTO `alunos` (`sequencia`, `nome`, `email`, `cpf`) VALUES
-(1, 'ALISSON JUAN FEITOZA DA SILVA', 'alissonruan567@gmail.com', '490.665.548-35'),
-(2, 'TESTE PARA TESTAR TESTANDO O TESTE TESTADO', 'teste@gmail.com', '353.747.098-36');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `assinaturas`
 --
 
@@ -59,10 +38,11 @@ CREATE TABLE `assinaturas` (
 --
 
 INSERT INTO `assinaturas` (`sequencia`, `nomeassinatura`, `caminho`) VALUES
-(1, 'assinatura Tercilio', 'public/images/assinaturaTercilio.gif'),
-(2, 'assinatura Mauro Audi', 'public/images/assinaturaMauroAudi.gif'),
-(3, 'assinatura Minardi', 'public/images/assinaturaMinardi.gif'),
-(4, 'assinatura Alisson', 'public/images/assinaturaAlisson.png');
+(0, 'SELECIONE A ASSINATURA', NULL),
+(1, 'ASSINATURA TERCILIO', 'public/images/assinaturaTercilio.gif'),
+(2, 'ASSINATURA MAURO AUDI', 'public/images/assinaturaMauroAudi.gif'),
+(3, 'ASSINATURA MINARDI', 'public/images/assinaturaMinardi.gif'),
+(4, 'ASSINATURA ALISSON', 'public/images/trueAss.png');
 
 -- --------------------------------------------------------
 
@@ -76,17 +56,55 @@ CREATE TABLE `evento` (
   `ch` int(11) NOT NULL,
   `dataentrada` date NOT NULL,
   `datafinal` date NOT NULL,
-  `descricao` varchar(100) NOT NULL,
-  `aluno` varchar(100) NOT NULL
+  `descricao` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
 
 --
 -- Extraindo dados da tabela `evento`
 --
 
-INSERT INTO `evento` (`sequencia`, `nome`, `ch`, `dataentrada`, `datafinal`, `descricao`, `aluno`) VALUES
-(1, 'SEMINÁRIO DE INICIAÇÃO CIENTÍFICA - SEMIC 2021', 4, '2021-09-08', '2021-09-10', 'Nucleo Intergrado de Pesquisa e Extenção da Universidade de Marília', '490.665.548-35'),
-(2, 'I SIMPÓSIO CONAGRA JR.: VISÃO DA ÁREA COMERCIAL DENTRO DE UMA MULTINACIONAL', 6, '2021-11-16', '2021-11-17', 'Medicina Veterinária e Engenharia Agronômica da Universidade', '353.747.098-36');
+INSERT INTO `evento` (`sequencia`, `nome`, `ch`, `dataentrada`, `datafinal`, `descricao`) VALUES
+(1, 'SEMINÁRIO DE INICIAÇÃO CIENTÍFICA - SEMIC 2021', 4, '2021-09-08', '2021-09-10', 'Nucleo Intergrado de Pesquisa e Extenção da Universidade de Marília'),
+(2, 'I SIMPÓSIO CONAGRA JR.: VISÃO DA ÁREA COMERCIAL DENTRO DE UMA MULTINACIONAL', 6, '2021-11-16', '2021-11-17', 'Medicina Veterinária e Engenharia Agronômica da Universidade');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `participante`
+--
+
+CREATE TABLE `participante` (
+  `sequencia` int(11) NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `cpf` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32;
+
+--
+-- Extraindo dados da tabela `participante`
+--
+
+INSERT INTO `participante` (`sequencia`, `nome`, `email`, `cpf`) VALUES
+(1, 'ALISSON JUAN FEITOZA DA SILVA', 'alissonruan567@gmail.com', '490.665.548-35'),
+(2, 'TESTE PARA TESTAR TESTANDO O TESTE TESTADO', 'teste@gmail.com', '353.747.098-36');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `participante_evento`
+--
+
+CREATE TABLE `participante_evento` (
+  `sequencia_participante` int(11) NOT NULL,
+  `evento` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf32;
+
+--
+-- Extraindo dados da tabela `participante_evento`
+--
+
+INSERT INTO `participante_evento` (`sequencia_participante`, `evento`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -96,31 +114,15 @@ INSERT INTO `evento` (`sequencia`, `nome`, `ch`, `dataentrada`, `datafinal`, `de
 
 CREATE TABLE `posicaotamanho` (
   `sequencia` int(11) NOT NULL,
-  `assinatura` int(11) NOT NULL,
   `posicaoX` int(11) DEFAULT NULL,
   `posicaoY` int(11) DEFAULT NULL,
   `tamanho` int(11) DEFAULT NULL,
-  `aluno` int(11) NOT NULL
+  `evento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32;
-
---
--- Extraindo dados da tabela `posicaotamanho`
---
-
-INSERT INTO `posicaotamanho` (`sequencia`, `assinatura`, `posicaoX`, `posicaoY`, `tamanho`, `aluno`) VALUES
-(1, 1, 20, 140, 60, 1),
-(2, 2, 20, 140, 60, 1),
-(3, 3, 20, 140, 60, 1);
 
 --
 -- Índices para tabelas despejadas
 --
-
---
--- Índices para tabela `alunos`
---
-ALTER TABLE `alunos`
-  ADD PRIMARY KEY (`sequencia`);
 
 --
 -- Índices para tabela `assinaturas`
@@ -135,38 +137,69 @@ ALTER TABLE `evento`
   ADD PRIMARY KEY (`sequencia`);
 
 --
+-- Índices para tabela `participante`
+--
+ALTER TABLE `participante`
+  ADD PRIMARY KEY (`sequencia`);
+
+--
+-- Índices para tabela `participante_evento`
+--
+ALTER TABLE `participante_evento`
+  ADD KEY `participante_evento_FK` (`sequencia_participante`),
+  ADD KEY `participante_evento_FK_1` (`evento`);
+
+--
 -- Índices para tabela `posicaotamanho`
 --
 ALTER TABLE `posicaotamanho`
-  ADD PRIMARY KEY (`sequencia`);
+  ADD PRIMARY KEY (`sequencia`),
+  ADD KEY `posicaotamanho_FK` (`evento`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT de tabela `alunos`
---
-ALTER TABLE `alunos`
-  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT de tabela `assinaturas`
 --
 ALTER TABLE `assinaturas`
-  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `evento`
 --
 ALTER TABLE `evento`
-  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `participante`
+--
+ALTER TABLE `participante`
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `posicaotamanho`
 --
 ALTER TABLE `posicaotamanho`
-  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sequencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `participante_evento`
+--
+ALTER TABLE `participante_evento`
+  ADD CONSTRAINT `participante_evento_FK` FOREIGN KEY (`sequencia_participante`) REFERENCES `participante` (`sequencia`),
+  ADD CONSTRAINT `participante_evento_FK_1` FOREIGN KEY (`evento`) REFERENCES `evento` (`sequencia`);
+
+--
+-- Limitadores para a tabela `posicaotamanho`
+--
+ALTER TABLE `posicaotamanho`
+  ADD CONSTRAINT `posicaotamanho_FK` FOREIGN KEY (`evento`) REFERENCES `evento` (`sequencia`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
