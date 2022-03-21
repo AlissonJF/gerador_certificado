@@ -45,9 +45,9 @@ class Gerador_Model extends Model
         $alunos = $this->db->select('SELECT
                 *
             FROM
-                alunos a
+                participante p
             WHERE
-                a.cpf = :cpf', array(":cpf" => $cpf));
+                p.cpf = :cpf', array(":cpf" => $cpf));
 
         if ($alunos != null) {
             $nome = utf8_decode($alunos[0]->nome);
@@ -82,18 +82,27 @@ class Gerador_Model extends Model
 
         $InfoTopCertificado = $this->db->select("
             SELECT
-                e.sequencia,
-                e.nome evento,
-                e.ch,
+                p.sequencia seqParticipante,
+                p.nome participante,
+                p.email,
+                p.cpf,
+                e.sequencia seqEvento,
+                e.nome nome_evento,
                 DATE_FORMAT(e.dataentrada, '%d/%m/%Y') AS dataentrada,
                 DATE_FORMAT(e.datafinal, '%d/%m/%Y') AS datafinal,
-                e.descricao
+                e.ch,
+                e.descricao,
+                pe.sequencia_participante,
+                pe.evento
             FROM
-                evento e
-            JOIN alunos a ON
-                e.aluno = a.cpf
+                participante_evento pe
+            JOIN participante p ON
+                p.sequencia = pe.sequencia_participante
+            JOIN evento e ON
+                pe.evento = e.sequencia
             WHERE
-                e.aluno = :cpf", array(":cpf" => $cpf));
+                p.cpf = :cpf
+            ", array(":cpf" => $cpf));
 
         // --------- Variáveis do Formulário ----- //
         if ($email == null
@@ -105,7 +114,7 @@ class Gerador_Model extends Model
 
             // --------- Variáveis que podem vir de um banco de dados por exemplo ----- //
             $infoTop = "A Universidade de Marília - UNIMAR, nos termos do artigo 111, parágrafo 1°\ndo seu Regimento Geral, certifica que";
-            $curso = utf8_decode($InfoTopCertificado[0]->evento);
+            $curso = utf8_decode($InfoTopCertificado[0]->nome_evento);
             $data = utf8_decode(" " . $InfoTopCertificado[0]->dataentrada . " a " . $InfoTopCertificado[0]->datafinal);
             $carga_h = " com carga horária total de " . $InfoTopCertificado[0]->ch . " horas";
             $descricao = $InfoTopCertificado[0]->descricao;
@@ -278,8 +287,8 @@ class Gerador_Model extends Model
                 a.cpf
             FROM
                 posicaotamanho p
-            JOIN alunos a ON
-                p.aluno = a.sequencia
+            JOIN participante p ON
+                p.aluno = p.sequencia
             WHERE
                 a.sequencia = :seq
         ', array(":seq" => $aluno));

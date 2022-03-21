@@ -73,7 +73,7 @@ class Index_Model extends Model
                 email,
                 cpf
             FROM
-                alunos a
+                participante p
             WHERE
                 email = :email
                 AND cpf = :cpf",
