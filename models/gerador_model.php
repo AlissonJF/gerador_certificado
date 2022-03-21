@@ -26,31 +26,23 @@ class Gerador_Model extends Model
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
         $qntsAss = 1;
+        $X2 = 0;
+        $X3 = 0;
+        $Y2 = 0;
+        $Y3 = 0;
 
         $move = intval($_POST['AssMove']);
 
-        $X = intval($_POST['posicaoX']);
-        $X2 = 0;
-        $X3 = 0;
-        $Y = intval($_POST['posicaoY']);
-        $Y2 = 0;
-        $Y3 = 0;
-        $tamanho = intval($_POST['tamanho']);
-        $T = 60;
-        $T2 = 60;
-        $T3 = 60;
-
         // --------- SCRIPT do Banco de Dados --------- //
-
-        $alunos = $this->db->select('SELECT
+        $participante = $this->db->select('SELECT
                 *
             FROM
                 participante p
             WHERE
                 p.cpf = :cpf', array(":cpf" => $cpf));
 
-        if ($alunos != null) {
-            $nome = utf8_decode($alunos[0]->nome);
+        if ($participante != null) {
+            $nome = utf8_decode($participante[0]->nome);
         }
 
         $assinaturas = $this->db->select('
@@ -80,6 +72,13 @@ class Gerador_Model extends Model
             WHERE
                 a.sequencia = :ass', array(":ass" => $ass3));
 
+        $buscaInfoBD = $this->db->select("
+            SELECT
+                *
+            FROM
+                posicaotamanho p
+        ");
+
         $InfoTopCertificado = $this->db->select("
             SELECT
                 p.sequencia seqParticipante,
@@ -103,6 +102,15 @@ class Gerador_Model extends Model
             WHERE
                 p.cpf = :cpf
             ", array(":cpf" => $cpf));
+
+        $seqEvento = $InfoTopCertificado[0]->seqEvento;
+
+        $dados = [
+            "posicaoX" => 120,
+            "posicaoY" => 140,
+            "tamanho" => 60,
+            "evento" => $InfoTopCertificado[0]->seqEvento
+        ];
 
         // --------- Variáveis do Formulário ----- //
         if ($email == null
@@ -139,16 +147,22 @@ class Gerador_Model extends Model
 
             // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
 
+            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            $X = $buscaInfoBD[0]->posicaoX;
+            $Y = $buscaInfoBD[0]->posicaoY;
+            $tamanho = $buscaInfoBD[0]->tamanho;
+
             if ($ass2 == 0 && $ass3 == 0) {
                 // ------ Movimentação Individual ------
                 $X = intval($_POST['posicaoX']);
                 if ($tamanho != "") {
-                    $T = $tamanho;
+                    $tamanho = $_POST['tamanho'];
                 }
-                $pdf->Image($printAss, $X, $Y, $T);
-            } else {
-                $X = 20;
-                $Y = 140;
+                $dados = [
+                    "posicaoX" => $X,
+                    "tamanho" => $tamanho
+                ];
+                $pdf->Image($printAss, $X, $Y, $tamanho);
             }
             if ($ass2 != 0) {
                 $qntsAss += 1;
@@ -210,6 +224,8 @@ class Gerador_Model extends Model
                 $pdf->Image($printAss3, $X3, $Y3, $T3);
             }
 
+            $insereInfoBD = $this->db->update("asscertificado.posicaotamanho", $dados, "evento='$seqEvento'");
+
             // opacidade total
             $pdf->SetAlpha(1);
 
@@ -252,7 +268,7 @@ class Gerador_Model extends Model
                 "tamanho2" => $T2,
                 "tamanho3" => $T3,
                 "qntAss" => $qntsAss,
-                "aluno" => $alunos,
+                "aluno" => $participante,
                 "arquivo" => "data:application/pdf;base64," . base64_encode($pdfdoc)
             ]);
         }
