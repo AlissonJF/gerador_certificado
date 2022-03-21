@@ -138,6 +138,7 @@ class Gerador_Model extends Model
             $pdf->Image('public/images/certificado.jpg', 0, 0, 295);
 
             // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
+
             if ($ass2 == 0 && $ass3 == 0) {
                 // ------ Movimentação Individual ------
                 $X = intval($_POST['posicaoX']);

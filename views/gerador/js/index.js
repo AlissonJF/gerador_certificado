@@ -12,6 +12,29 @@ $(document).ready(function () {
 
     $(document).on("submit", "#formCertificado", function (event) {
         event.preventDefault();
+        $("#editPositions").html(`
+            <div class="col-md-4">
+                <div>
+                    <label class="form-label" for="posicaoX">Posição X</label>
+                    <input name="posicaoX" value="" id="posicaoX"
+                           class="form-control text-center" type="text">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <label class="form-label" for="tamanho">Tamanho</label>
+                    <input name="tamanho" value="" id="tamanho"
+                           class="form-control text-center" type="text">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div>
+                    <label class="form-label" for="posicaoY">Posição Y</label>
+                    <input name="posicaoY" value="" id="posicaoY"
+                           class="form-control text-center" type="text">
+                </div>
+            </div>
+        `);
         updateCertificado(this);
     });
 
