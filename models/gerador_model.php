@@ -26,10 +26,13 @@ class Gerador_Model extends Model
         $ass2 = intval($_POST['selectAss2']);
         $ass3 = intval($_POST['selectAss3']);
         $qntsAss = 1;
-        $X2 = 0;
-        $X3 = 0;
-        $Y2 = 0;
-        $Y3 = 0;
+        $X = 120;
+        $X2 = 120;
+        $X3 = 120;
+        $Y = 140;
+        $Y2 = 140;
+        $Y3 = 140;
+        $tamanho = 60;
 
         $move = intval($_POST['AssMove']);
 
@@ -72,13 +75,6 @@ class Gerador_Model extends Model
             WHERE
                 a.sequencia = :ass', array(":ass" => $ass3));
 
-        $buscaInfoBD = $this->db->select("
-            SELECT
-                *
-            FROM
-                posicaotamanho p
-        ");
-
         $InfoTopCertificado = $this->db->select("
             SELECT
                 p.sequencia seqParticipante,
@@ -104,13 +100,6 @@ class Gerador_Model extends Model
             ", array(":cpf" => $cpf));
 
         $seqEvento = $InfoTopCertificado[0]->seqEvento;
-
-        $dados = [
-            "posicaoX" => 120,
-            "posicaoY" => 140,
-            "tamanho" => 60,
-            "evento" => $InfoTopCertificado[0]->seqEvento
-        ];
 
         // --------- Variáveis do Formulário ----- //
         if ($email == null
@@ -147,10 +136,48 @@ class Gerador_Model extends Model
 
             // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
 
-            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            $dados = [
+                "posicaoX" => $X,
+                "posicaoY" => $Y,
+                "tamanho" => $tamanho,
+                "evento" => $InfoTopCertificado[0]->seqEvento
+            ];
+
+            // $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            if ($ass2 != 0) {
+                $dados = [
+                    "posicaoX" => $X2,
+                    "posicaoY" => $Y2,
+                    "tamanho" => $tamanho,
+                    "evento" => $InfoTopCertificado[0]->seqEvento
+                ];
+
+                // $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            }
+            if ($ass3 != 0) {
+                $dados = [
+                    "posicaoX" => $X3,
+                    "posicaoY" => $Y3,
+                    "tamanho" => $tamanho,
+                    "evento" => $InfoTopCertificado[0]->seqEvento
+                ];
+
+                // $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            }
+
+            $buscaInfoBD = $this->db->select("
+                SELECT
+                    *
+                FROM
+                    posicaotamanho p
+                WHERE
+                    p.evento = :evento
+            ", array(":evento" => $InfoTopCertificado[0]->seqEvento));
+
             $X = $buscaInfoBD[0]->posicaoX;
             $Y = $buscaInfoBD[0]->posicaoY;
             $tamanho = $buscaInfoBD[0]->tamanho;
+            // $buscaInfoBD
 
             if ($ass2 == 0 && $ass3 == 0) {
                 // ------ Movimentação Individual ------
