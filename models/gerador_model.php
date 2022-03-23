@@ -57,24 +57,6 @@ class Gerador_Model extends Model
             WHERE
                 a.sequencia = :ass', array(":ass" => $ass));
 
-        $assinaturas2 = $this->db->select('
-            SELECT
-                sequencia,
-                caminho caminho2
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass2));
-
-        $assinaturas3 = $this->db->select('
-            SELECT
-                sequencia,
-                caminho caminho3
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass3));
-
         $InfoTopCertificado = $this->db->select("
             SELECT
                 p.sequencia seqParticipante,
@@ -121,8 +103,8 @@ class Gerador_Model extends Model
 
             // --------- Teste de assinaturas --------- //
             $printAss = $assinaturas[0]->caminho;
-            $printAss2 = $assinaturas2[0]->caminho2;
-            $printAss3 = $assinaturas3[0]->caminho3;
+            $printAss2 = $assinaturas[0]->caminho;
+            $printAss3 = $assinaturas[0]->caminho;
 
             $pdf = new AlphaPDF();
 
@@ -143,7 +125,7 @@ class Gerador_Model extends Model
                 "evento" => $InfoTopCertificado[0]->seqEvento
             ];
 
-            // $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
+            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
             if ($ass2 != 0) {
                 $dados = [
                     "posicaoX" => $X2,
@@ -199,20 +181,20 @@ class Gerador_Model extends Model
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    if ($tamanho != "") {
-                        $T = $tamanho;
-                    }
+                    // if ($tamanho != "") {
+                    //     $T = $tamanho;
+                    // }
                 }
                 if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
-                    if ($tamanho != "") {
-                        $T2 = $tamanho;
-                    }
+                    // if ($tamanho != "") {
+                    //     $T2 = $tamanho;
+                    // }
                 }
 
-                $pdf->Image($printAss, $X, $Y, $T);
-                $pdf->Image($printAss2, $X2, $Y2, $T2);
+                $pdf->Image($printAss, $X, $Y, $tamanho);
+                $pdf->Image($printAss2, $X2, $Y2, $tamanho);
             }
             if ($ass2 != 0 && $ass3 != 0) {
                 $X3 = 120;
@@ -222,11 +204,11 @@ class Gerador_Model extends Model
                 if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
-                    if ($tamanho != "") {
-                        $T3 = $tamanho;
-                    }
+                    // if ($tamanho != "") {
+                    //     $T3 = $tamanho;
+                    // }
                 }
-                $pdf->Image($printAss3, $X3, $Y3, $T3);
+                $pdf->Image($printAss3, $X3, $Y3, $tamanho);
             }
             if ($ass3 != 0 && $ass2 == 0) {
                 $X3 = 210;
@@ -236,9 +218,9 @@ class Gerador_Model extends Model
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    if ($tamanho != "") {
-                        $T = $tamanho;
-                    }
+                    // if ($tamanho != "") {
+                    //     $T = $tamanho;
+                    // }
                 }
                 if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
@@ -247,8 +229,8 @@ class Gerador_Model extends Model
                         $T3 = $tamanho;
                     }
                 }
-                $pdf->Image($printAss, $X, $Y, $T);
-                $pdf->Image($printAss3, $X3, $Y3, $T3);
+                $pdf->Image($printAss, $X, $Y, $tamanho);
+                $pdf->Image($printAss3, $X3, $Y3, $tamanho);
             }
 
             $insereInfoBD = $this->db->update("asscertificado.posicaotamanho", $dados, "evento='$seqEvento'");
@@ -291,9 +273,6 @@ class Gerador_Model extends Model
                 "posicaoY2" => $Y2,
                 "posicaoY3" => $Y3,
                 "move" => $move,
-                "tamanho" => $T,
-                "tamanho2" => $T2,
-                "tamanho3" => $T3,
                 "qntAss" => $qntsAss,
                 "aluno" => $participante,
                 "arquivo" => "data:application/pdf;base64," . base64_encode($pdfdoc)

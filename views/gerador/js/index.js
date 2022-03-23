@@ -41,7 +41,7 @@ $(document).ready(function () {
     function selectAssinatura()
     {
         getUrl(BASEURL + "/gerador/selectAssinatura").then(res => {
-            var txt = ``;
+            var txt = `<option selected disabled>SELECIONE A ASSINATURA</option>`;
 
             res.data.forEach(element => {
                 txt += `<option value="${element.sequencia}">${element.nomeassinatura}</option>`
