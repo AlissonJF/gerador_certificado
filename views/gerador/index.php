@@ -41,8 +41,8 @@
                         <select id="AssMove" name="AssMove" class="btn btn-default col-md-12">
                             <option value="0" selected>Mover Assinatura</option>
                             <option value="1">Assinatura 1 (lado esquerdo)</option>
-                            <option value="2">Assinatura 2 (lado direito)</option>
-                            <option value="3">Assinatura 3 (lado meio)</option>
+                            <option value="2">Assinatura 2 (lado meio)</option>
+                            <option value="3">Assinatura 3 (lado direito)</option>
                         </select>
                     </div>
                 </div>

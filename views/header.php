@@ -29,7 +29,9 @@
 
 </head>
 <body style="background-color: #005BAA">
-<br>
+<div class="text-center">
+    <img src="https://oficial.unimar.br/wp-content/themes/unimarpresencial/images/logo.svg" width="150" height="50">
+</div>
 <div style="
     margin-left: 40px;
     margin-right: 40px;

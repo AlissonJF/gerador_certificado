@@ -30,13 +30,47 @@ class Gerador_Model extends Model
         $X2 = 120;
         $X3 = 120;
         $Y = 140;
-        $Y2 = 140;
-        $Y3 = 140;
         $tamanho = 60;
+
+        if ($ass2 != 0 && $ass3 == 0) {
+            $qntsAss = 2;
+        }
+        if ($ass2 != 0 && $ass3 != 0) {
+            $qntsAss = 3;
+        }
 
         $move = intval($_POST['AssMove']);
 
         // --------- SCRIPT do Banco de Dados --------- //
+        $assinaturas = $this->db->select('
+            SELECT
+                sequencia,
+                caminho
+            FROM
+                assinaturas a
+            WHERE
+                a.sequencia = :ass', array(":ass" => $ass));
+
+        if ($qntsAss > 1) {
+            $assinaturas2 = $this->db->select('
+                SELECT
+                    sequencia,
+                    caminho
+                FROM
+                    assinaturas a
+                WHERE
+                    a.sequencia = :ass', array(":ass" => $ass2));
+
+            $assinaturas3 = $this->db->select('
+                SELECT
+                    sequencia,
+                    caminho
+                FROM
+                    assinaturas a
+                WHERE
+                    a.sequencia = :ass', array(":ass" => $ass3));
+        }
+
         $participante = $this->db->select('SELECT
                 *
             FROM
@@ -47,15 +81,6 @@ class Gerador_Model extends Model
         if ($participante != null) {
             $nome = utf8_decode($participante[0]->nome);
         }
-
-        $assinaturas = $this->db->select('
-            SELECT
-                sequencia,
-                caminho
-            FROM
-                assinaturas a
-            WHERE
-                a.sequencia = :ass', array(":ass" => $ass));
 
         $InfoTopCertificado = $this->db->select("
             SELECT
@@ -103,8 +128,10 @@ class Gerador_Model extends Model
 
             // --------- Teste de assinaturas --------- //
             $printAss = $assinaturas[0]->caminho;
-            $printAss2 = $assinaturas[0]->caminho;
-            $printAss3 = $assinaturas[0]->caminho;
+            if ($qntsAss > 1) {
+                $printAss2 = $assinaturas2[0]->caminho;
+                $printAss3 = $assinaturas3[0]->caminho;
+            }
 
             $pdf = new AlphaPDF();
 
@@ -117,6 +144,32 @@ class Gerador_Model extends Model
             $pdf->Image('public/images/certificado.jpg', 0, 0, 295);
 
             // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
+            /*if ($ass2 != 0) {
+                $X = 20;
+                $X2 = 210;
+                $Y2 = 140;
+                $dados2 = [
+                    "posicaoX" => $X2,
+                    "posicaoY" => $Y2,
+                    "tamanho" => $tamanho,
+                    "evento" => $InfoTopCertificado[0]->seqEvento
+                ];
+
+                $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados2);
+            }
+            if ($ass3 != 0) {
+                $X = 20;
+                $X3 = 120;
+                $Y3 = 140;
+                $dados3 = [
+                    "posicaoX" => $X3,
+                    "posicaoY" => $Y3,
+                    "tamanho" => $tamanho,
+                    "evento" => $InfoTopCertificado[0]->seqEvento
+                ];
+
+                $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados3);
+            }
 
             $dados = [
                 "posicaoX" => $X,
@@ -125,115 +178,59 @@ class Gerador_Model extends Model
                 "evento" => $InfoTopCertificado[0]->seqEvento
             ];
 
-            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            if ($ass2 != 0) {
-                $dados = [
-                    "posicaoX" => $X2,
-                    "posicaoY" => $Y2,
-                    "tamanho" => $tamanho,
-                    "evento" => $InfoTopCertificado[0]->seqEvento
-                ];
-
-                // $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            }
-            if ($ass3 != 0) {
-                $dados = [
-                    "posicaoX" => $X3,
-                    "posicaoY" => $Y3,
-                    "tamanho" => $tamanho,
-                    "evento" => $InfoTopCertificado[0]->seqEvento
-                ];
-
-                // $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            }
+            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);*/
 
             $buscaInfoBD = $this->db->select("
                 SELECT
-                    *
+                    p.sequencia seqPT,
+                    p.posicaoX,
+                    p.posicaoY,
+                    p.tamanho,
+                    e.sequencia seqEvento,
+                    e.nome,
+                    e.descricao,
+                    e.ch,
+                    e.dataentrada,
+                    e.datafinal,
+                    p2.sequencia,
+                    p2.nome,
+                    p2.cpf
                 FROM
                     posicaotamanho p
+                JOIN evento e ON
+                    e.sequencia = p.evento
+                JOIN participante_evento pe ON
+                    pe.evento = e.sequencia
+                JOIN participante p2 ON
+                    pe.sequencia_participante = p2.sequencia
                 WHERE
-                    p.evento = :evento
-            ", array(":evento" => $InfoTopCertificado[0]->seqEvento));
+                    p2.cpf = :cpf
+            ", array(":cpf" => $cpf));
 
-            $X = $buscaInfoBD[0]->posicaoX;
-            $Y = $buscaInfoBD[0]->posicaoY;
-            $tamanho = $buscaInfoBD[0]->tamanho;
-            // $buscaInfoBD
+            $X = $buscaInfoBD[2]->posicaoX;
+            $X2 = $buscaInfoBD[1]->posicaoX;
+            $X3 = $buscaInfoBD[0]->posicaoX;
+            $Y = $buscaInfoBD[2]->posicaoY;
+            $Y2 = $buscaInfoBD[1]->posicaoY;
+            $Y3 = $buscaInfoBD[0]->posicaoY;
+            $tamanho = $buscaInfoBD[2]->tamanho;
+            $tamanho2 = $buscaInfoBD[1]->tamanho;
+            $tamanho3 = $buscaInfoBD[0]->tamanho;
 
-            if ($ass2 == 0 && $ass3 == 0) {
-                // ------ Movimentação Individual ------
-                $X = intval($_POST['posicaoX']);
-                if ($tamanho != "") {
-                    $tamanho = $_POST['tamanho'];
-                }
-                $dados = [
-                    "posicaoX" => $X,
-                    "tamanho" => $tamanho
-                ];
-                $pdf->Image($printAss, $X, $Y, $tamanho);
-            }
-            if ($ass2 != 0) {
-                $qntsAss += 1;
-                $X2 = 210;
-                $Y2 = 140;
-                // ------ Movimentação Individual ------
-                if ($move == 1) {
-                    $X = intval($_POST['posicaoX']);
-                    $Y = intval($_POST['posicaoY']);
-                    // if ($tamanho != "") {
-                    //     $T = $tamanho;
-                    // }
-                }
-                if ($move == 2) {
-                    $X2 = intval($_POST['posicaoX2']);
-                    $Y2 = intval($_POST['posicaoY2']);
-                    // if ($tamanho != "") {
-                    //     $T2 = $tamanho;
-                    // }
-                }
+            /*$dados = [
+                "posicaoX" => $X,
+                "posicaoY" => $Y,
+                "tamanho" => $tamanho,
+                "evento" => $InfoTopCertificado[0]->seqEvento
+            ];
 
-                $pdf->Image($printAss, $X, $Y, $tamanho);
-                $pdf->Image($printAss2, $X2, $Y2, $tamanho);
-            }
-            if ($ass2 != 0 && $ass3 != 0) {
-                $X3 = 120;
-                $Y3 = 140;
-                $qntsAss += 1;
-                // ------ Movimentação Individual ------
-                if ($move == 3) {
-                    $X3 = intval($_POST['posicaoX3']);
-                    $Y3 = intval($_POST['posicaoY3']);
-                    // if ($tamanho != "") {
-                    //     $T3 = $tamanho;
-                    // }
-                }
-                $pdf->Image($printAss3, $X3, $Y3, $tamanho);
-            }
-            if ($ass3 != 0 && $ass2 == 0) {
-                $X3 = 210;
-                $Y3 = 140;
-                $qntsAss += 1;
-                // ------ Movimentação Individual ------
-                if ($move == 1) {
-                    $X = intval($_POST['posicaoX']);
-                    $Y = intval($_POST['posicaoY']);
-                    // if ($tamanho != "") {
-                    //     $T = $tamanho;
-                    // }
-                }
-                if ($move == 3) {
-                    $X3 = intval($_POST['posicaoX3']);
-                    $Y3 = intval($_POST['posicaoY3']);
-                    if ($tamanho != "") {
-                        $T3 = $tamanho;
-                    }
-                }
-                $pdf->Image($printAss, $X, $Y, $tamanho);
-                $pdf->Image($printAss3, $X3, $Y3, $tamanho);
-            }
+            $insereInfoBD = $this->db->update("asscertificado.posicaotamanho", $dados, "evento='$seqEvento'");*/
 
-            $insereInfoBD = $this->db->update("asscertificado.posicaotamanho", $dados, "evento='$seqEvento'");
+            $pdf->Image($printAss, $X, $Y, $tamanho);
+            if ($qntsAss > 1) {
+                $pdf->Image($printAss2, $X2, $Y2, $tamanho2);
+                $pdf->Image($printAss3, $X3, $Y3, $tamanho3);
+            }
 
             // opacidade total
             $pdf->SetAlpha(1);
@@ -292,53 +289,9 @@ class Gerador_Model extends Model
 
     public function savePosition()
     {
-        $posicoes = json_decode(file_get_contents('php://input'));
-        $tamanhos = $posicoes->tamanho;
-        $posicaoX = [$posicoes->Ass[0], $posicoes->Ass2[0], $posicoes->Ass3[0]];
-        $posicaoY = [$posicoes->Ass[1], $posicoes->Ass2[1], $posicoes->Ass3[1]];
-        $al = $posicoes->aluno;
-        $aluno = $al[0]->sequencia;
-
-        $sql = $this->db->select('
-            SELECT
-                p.sequencia,
-                p.posicaoX,
-                p.posicaoY,
-                p.tamanho,
-                a.nome,
-                a.email,
-                a.cpf
-            FROM
-                posicaotamanho p
-            JOIN participante p ON
-                p.aluno = p.sequencia
-            WHERE
-                a.sequencia = :seq
-        ', array(":seq" => $aluno));
-
-        $dados = [
-            "aluno" => $aluno,
-            "posicaoX" => $posicaoX[0],
-            "posicaoY" => $posicaoY[0],
-            "posicaoX2" => $posicaoX[1],
-            "posicaoY2" => $posicaoY[1],
-            "posicaoX3" => $posicaoX[2],
-            "posicaoY3" => $posicaoY[2],
-            "tamanho" => $tamanhos[0],
-            "tamanho2" => $tamanhos[1],
-            "tamanho3" => $tamanhos[2],
-        ];
         $msg = array("codigo" => 0, "texto" => "Falha ao salvar.");
 
-        /*if ($sql == null || $sql == "") {
-            $result = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            $msg = array("codigo" => 1, "texto" => "Adicionado com sucesso.");
-        } else {
-            $result = $this->db->update("asscertificado.posicaotamanho", $dados, "aluno='$aluno'");
-            $msg = array("codigo" => 1, "texto" => "Atualizado com sucesso.");
-        }*/
-
-        // Session::destroy();
+        Session::destroy();
 
         echo json_encode($msg);
     }
