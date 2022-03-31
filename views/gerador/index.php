@@ -76,7 +76,29 @@
 
                 <br><br>
 
-                <div class="row" id="editPositions"></div>
+                <div class="row" id="editPositions">
+                    <div class="col-md-4">
+                        <div>
+                            <label class="form-label" for="posicaoX">Posição X</label>
+                            <input name="posicaoX" disabled value="" id="posicaoX"
+                                   class="form-control text-center" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <label class="form-label" for="tamanho">Tamanho</label>
+                            <input name="tamanho" value="" id="tamanho"
+                                   class="form-control text-center" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div>
+                            <label class="form-label" for="posicaoY">Posição Y</label>
+                            <input name="posicaoY" disabled value="" id="posicaoY"
+                                   class="form-control text-center" type="text">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="col col-md-6" style="padding-top: 20px">

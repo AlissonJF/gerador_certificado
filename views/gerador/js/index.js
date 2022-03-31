@@ -5,6 +5,9 @@ $(document).ready(function () {
     let posicaoY = 140; // MAX UP posicao Y = 130px MIN DOWN posicao Y = 150px
     let posicaoY2 = 140;
     let posicaoY3 = 140;
+    let tamanho = 60;
+    let tamanho2 = 60;
+    let tamanho3 = 60;
 
     $('.ArrowUP').click(function () {
         posicaoY -= 10;
@@ -40,29 +43,6 @@ $(document).ready(function () {
 
     $(document).on("submit", "#formCertificado", function (event) {
         event.preventDefault();
-        $("#editPositions").html(`
-            <div class="col-md-4">
-                <div>
-                    <label class="form-label" for="posicaoX">Posição X</label>
-                    <input name="posicaoX" disabled value="" id="posicaoX"
-                           class="form-control text-center" type="text">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <label class="form-label" for="tamanho">Tamanho</label>
-                    <input name="tamanho" value="" id="tamanho"
-                           class="form-control text-center" type="text">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <label class="form-label" for="posicaoY">Posição Y</label>
-                    <input name="posicaoY" disabled value="" id="posicaoY"
-                           class="form-control text-center" type="text">
-                </div>
-            </div>
-        `);
         arrumaPosicao(this)
     });
 
@@ -85,7 +65,8 @@ $(document).ready(function () {
         $.post(BASEURL + "/gerador/arrumaPosicao", `${$(dados).serialize()}
         &posicaoX=${posicaoX}&posicaoY=${posicaoY}
         &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}
-        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}`, function (data) {
+        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}
+        &tamanho=${tamanho}&tamanho2=${tamanho2}&tamanho3=${tamanho3}`, function (data) {
             if (data == '') {
                 swal("Oops", 'Não foi possível continuar! Verifique se há alguma assinatura selecionada.', "error");
             }
@@ -105,17 +86,7 @@ $(document).ready(function () {
 
     function updateCertificado(dados) {
         $.post(BASEURL + "/gerador/gerador", dados, function (data) {
-            console.log(data);
             data = JSON.parse(data);
-            posicaoX = parseInt(data.posicaoX);
-            posicaoX2 = parseInt(data.posicaoX2);
-            posicaoX3 = parseInt(data.posicaoX3);
-            posicaoY = parseInt(data.posicaoY);
-            posicaoY2 = parseInt(data.posicaoY2);
-            posicaoY3 = parseInt(data.posicaoY3);
-            tamanho = parseInt(data.tamanho);
-            tamanho2 = parseInt(data.tamanho2);
-            tamanho3 = parseInt(data.tamanho3);
             let qntAss = parseInt(data.qntAss);
             let aluno = data.aluno;
             $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="650">`);

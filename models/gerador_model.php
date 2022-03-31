@@ -203,18 +203,12 @@ class Gerador_Model extends Model
         $Y2 = intval($_POST['posicaoY2']);
         $Y3 = intval($_POST['posicaoY3']);
         $move = intval($_POST['AssMove']);
-        $tamanho = 60;
-        $tamanho2 = 60;
-        $tamanho3 = 60;
+        $tamanho = intval($_POST['tamanho']);
+        $tamanho2 = intval($_POST['tamanho2']);
+        $tamanho3 = intval($_POST['tamanho3']);
 
         if (isset($_POST['selectAss1'])) {
             if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
-                $X = 120;
-                if ($move == 1) {
-                    $X = intval($_POST['posicaoX']);
-                    $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho']);
-                }
                 echo json_encode([
                     "posicaoX" => $X,
                     "posicaoY" => $Y,
