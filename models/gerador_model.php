@@ -26,9 +26,17 @@ class Gerador_Model extends Model
         $Y = intval($_POST['posicaoY']);
         $move = intval($_POST['move']);
         $tamanho = intval($_POST['tamanho']);
+        $select1 = intval($_POST['select1']);
+        $select2 = 0;
+        $select3 = 0;
         $qntsAss = 1;
 
-
+        if (isset($_POST['select2'])) {
+            $select2 = intval($_POST['select2']);
+            if (isset($_POST['select3'])) {
+                $select3 = intval($_POST['select3']);
+            }
+        }
 
         // --------- SCRIPT do Banco de Dados --------- //
         $participante = $this->db->select('SELECT
@@ -55,40 +63,56 @@ class Gerador_Model extends Model
             JOIN assinaturas a ON
                 pe.assinatura = a.sequencia
             WHERE
-                p.sequencia = :seq
-        ', array(":seq" => $participante[0]->sequencia));
+                p.sequencia = :seq AND
+                a.sequencia = :ass
+        ', array(
+            ":seq" => $participante[0]->sequencia,
+            ":ass" => $select1
+        ));
 
-        $assinaturas2 = $this->db->select('
-            SELECT
-                a.sequencia,
-                a.caminho
-            FROM
-                participante_evento pe
-            JOIN participante p ON
-                pe.sequencia_participante = p.sequencia
-            JOIN evento e ON
-                pe.evento = e.sequencia
-            JOIN assinaturas a ON
-                pe.assinatura = a.sequencia
-            WHERE
-                p.sequencia = :seq
-        ', array(":seq" => $participante[0]->sequencia));
+        if ($select2 != 0) {
+            $assinaturas2 = $this->db->select('
+                SELECT
+                    a.sequencia,
+                    a.caminho
+                FROM
+                    participante_evento pe
+                JOIN participante p ON
+                    pe.sequencia_participante = p.sequencia
+                JOIN evento e ON
+                    pe.evento = e.sequencia
+                JOIN assinaturas a ON
+                    pe.assinatura = a.sequencia
+                WHERE
+                    p.sequencia = :seq AND
+                    a.sequencia = :ass
+            ', array(
+                ":seq" => $participante[0]->sequencia,
+                ":ass" => $select2
+            ));
+        }
 
-        $assinaturas3 = $this->db->select('
-            SELECT
-                a.sequencia,
-                a.caminho
-            FROM
-                participante_evento pe
-            JOIN participante p ON
-                pe.sequencia_participante = p.sequencia
-            JOIN evento e ON
-                pe.evento = e.sequencia
-            JOIN assinaturas a ON
-                pe.assinatura = a.sequencia
-            WHERE
-                p.sequencia = :seq
-        ', array(":seq" => $participante[0]->sequencia));
+        if ($select3 != 0) {
+            $assinaturas3 = $this->db->select('
+                SELECT
+                    a.sequencia,
+                    a.caminho
+                FROM
+                    participante_evento pe
+                JOIN participante p ON
+                    pe.sequencia_participante = p.sequencia
+                JOIN evento e ON
+                    pe.evento = e.sequencia
+                JOIN assinaturas a ON
+                    pe.assinatura = a.sequencia
+                WHERE
+                    p.sequencia = :seq AND
+                    a.sequencia = :ass
+            ', array(
+                ":seq" => $participante[0]->sequencia,
+                ":ass" => $select3
+            ));
+        }
 
         $InfoTopCertificado = $this->db->select("
             SELECT
@@ -203,30 +227,40 @@ class Gerador_Model extends Model
         $Y2 = intval($_POST['posicaoY2']);
         $Y3 = intval($_POST['posicaoY3']);
         $move = intval($_POST['AssMove']);
-        $tamanho = intval($_POST['tamanho']);
-        $tamanho2 = intval($_POST['tamanho2']);
-        $tamanho3 = intval($_POST['tamanho3']);
+        $tamanho = intval($_POST['tamanho1']);
+        $tamanho2 = intval($_POST['tamanho1']);
+        $tamanho3 = intval($_POST['tamanho1']);
+        $select1 = intval($_POST['selectAss1']);
 
         if (isset($_POST['selectAss1'])) {
             if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                }
                 echo json_encode([
                     "posicaoX" => $X,
                     "posicaoY" => $Y,
                     "tamanho" => $tamanho,
-                    "move" => $move
+                    "move" => $move,
+                    "select1" => $select1
                 ]);
             }
             if (isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
+                $select2 = intval($_POST['selectAss2']);
                 $X2 = 210;
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                    $tamanho2 = 60;
+                }
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho']);
+                    $tamanho = intval($_POST['tamanho1']);
                 }
                 if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho2']);
+                    $tamanho2 = intval($_POST['tamanho1']);
                 }
                 echo json_encode([
                     "posicaoX" => $X,
@@ -235,24 +269,33 @@ class Gerador_Model extends Model
                     "posicaoY2" => $Y2,
                     "tamanho" => $tamanho,
                     "tamanho2" => $tamanho2,
-                    "move" => $move
+                    "move" => $move,
+                    "select1" => $select1,
+                    "select2" => $select2
                 ]);
             }
             if (isset($_POST['selectAss2']) && isset($_POST['selectAss3'])) {
+                $select2 = intval($_POST['selectAss2']);
+                $select3 = intval($_POST['selectAss3']);
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                    $tamanho2 = 60;
+                    $tamanho3 = 60;
+                }
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho']);
+                    $tamanho = intval($_POST['tamanho1']);
                 }
                 if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho2']);
+                    $tamanho2 = intval($_POST['tamanho1']);
                 }
                 if ($move == 3) {
                     $X3 = intval($_POST['posicaoX3']);
                     $Y3 = intval($_POST['posicaoY3']);
-                    $tamanho3 = intval($_POST['tamanho3']);
+                    $tamanho3 = intval($_POST['tamanho1']);
                 }
                 echo json_encode([
                     "posicaoX" => $X,
@@ -264,10 +307,15 @@ class Gerador_Model extends Model
                     "tamanho" => $tamanho,
                     "tamanho2" => $tamanho2,
                     "tamanho3" => $tamanho3,
-                    "move" => $move
+                    "move" => $move,
+                    "select1" => $select1,
+                    "select2" => $select2,
+                    "select3" => $select3
                 ]);
             }
-        } else { exit; }
+        } else {
+            exit;
+        }
     }
 
     public function selectAssinatura()

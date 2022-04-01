@@ -63,29 +63,29 @@ $(document).ready(function () {
 
     function arrumaPosicao(dados) {
         $.post(BASEURL + "/gerador/arrumaPosicao", `${$(dados).serialize()}
-        &posicaoX=${posicaoX}&posicaoY=${posicaoY}
-        &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}
-        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}
-        &tamanho=${tamanho}&tamanho2=${tamanho2}&tamanho3=${tamanho3}`, function (data) {
+        &posicaoX=${posicaoX}&posicaoY=${posicaoY}&tamanho=${tamanho}
+        &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}&tamanho2=${tamanho2}
+        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}&tamanho3=${tamanho3}`, function (data) {
             if (data == '') {
                 swal("Oops", 'Não foi possível continuar! Verifique se há alguma assinatura selecionada.', "error");
             }
             data = JSON.parse(data)
-            posicaoX = parseInt(data.posicaoX);
-            posicaoX2 = parseInt(data.posicaoX2);
-            posicaoX3 = parseInt(data.posicaoX3);
-            posicaoY = parseInt(data.posicaoY);
-            posicaoY2 = parseInt(data.posicaoY2);
-            posicaoY3 = parseInt(data.posicaoY3);
-            let tamanho = parseInt(data.tamanho);
-            let tamanho2 = parseInt(data.tamanho2);
-            let tamanho3 = parseInt(data.tamanho3);
+            posicaoX = data.posicaoX;
+            posicaoX2 = data.posicaoX2;
+            posicaoX3 = data.posicaoX3;
+            posicaoY = data.posicaoY;
+            posicaoY2 = data.posicaoY2;
+            posicaoY3 = data.posicaoY3;
+            tamanho = data.tamanho;
+            tamanho2 = data.tamanho2;
+            tamanho3 = data.tamanho3;
             updateCertificado(data)
         })
     }
 
     function updateCertificado(dados) {
         $.post(BASEURL + "/gerador/gerador", dados, function (data) {
+            console.log(data)
             data = JSON.parse(data);
             let qntAss = parseInt(data.qntAss);
             let aluno = data.aluno;
@@ -113,26 +113,11 @@ $(document).ready(function () {
             $("#tamanho").val(tamanho + 'px');
 
             const positions = {
-                "Ass": [
-                    posicaoX,
-                    posicaoY
-                ],
-                "Ass2": [
-                    posicaoX2,
-                    posicaoY2
-                ],
-                "Ass3": [
-                    posicaoX3,
-                    posicaoY3
-                ],
-                "tamanho": [
-                    tamanho,
-                    tamanho2,
-                    tamanho3
-                ],
-                "aluno": [
-                    aluno[0]
-                ],
+                "Ass": [posicaoX, posicaoY],
+                "Ass2": [posicaoX2, posicaoY2],
+                "Ass3": [posicaoX3, posicaoY3],
+                "tamanho": [tamanho, tamanho2, tamanho3],
+                "aluno": [aluno[0]],
             };
 
             $(document).on("click", "#SalvarDados", function () {

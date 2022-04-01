@@ -86,8 +86,8 @@
                     </div>
                     <div class="col-md-4">
                         <div>
-                            <label class="form-label" for="tamanho">Tamanho</label>
-                            <input name="tamanho" value="" id="tamanho"
+                            <label class="form-label" for="tamanho1">Tamanho</label>
+                            <input name="tamanho1" value="" id="tamanho1"
                                    class="form-control text-center" type="text">
                         </div>
                     </div>
