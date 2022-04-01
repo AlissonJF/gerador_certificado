@@ -8,7 +8,7 @@ Nesse projeto será gerado um certificado (que servirá apenas para estudo no mo
 
 1. Faça download e jogue todos os arquivos no servidor
 2. Crie um banco de dados com base no script da pasta "dump"
-3. Abra o site com a rota escolhida (Ex: http://localhost/estagio/gerador_definitivo/gerador/index)
+3. Abra o site com a rota escolhida (Ex: http://localhost/estagio/gerador_definitivo/)
 4. Preencha as informações necessárias e avance
 5. Selecione uma assinatura e clique em "Atualizar Certificado"
 6. Quando estiver tudo ajustado, clique em "salvar" para concluir
