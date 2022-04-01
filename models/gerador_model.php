@@ -291,48 +291,48 @@ class Gerador_Model extends Model
                     p.assinatura = a.sequencia
         ");
 
-        if ($ass2 != 0) {
-            if ($quantidade[0]->qntAss < 3) {
-                $dados = [
-                    "posicaoX" => $X2,
-                    "posicaoY" => $Y2,
-                    "tamanho" => $tamanho,
-                    "evento" => $InfoTopCertificado[0]->seqEvento,
-                    "assinatura" => $assinaturas2[0]->sequencia
-                ];
+        // if ($ass2 != 0) {
+        //     if ($quantidade[0]->qntAss < 3) {
+        //         $dados = [
+        //             "posicaoX" => $X2,
+        //             "posicaoY" => $Y2,
+        //             "tamanho" => $tamanho,
+        //             "evento" => $InfoTopCertificado[0]->seqEvento,
+        //             "assinatura" => $assinaturas2[0]->sequencia
+        //         ];
 
-                $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            }
-        }
+        //         $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados);
+        //     }
+        // }
 
-        if ($ass3 != 0) {
-            if ($quantidade[0]->qntAss < 3) {
-                $dados = [
-                    "posicaoX" => $X3,
-                    "posicaoY" => $Y3,
-                    "tamanho" => $tamanho,
-                    "evento" => $InfoTopCertificado[0]->seqEvento,
-                    "assinatura" => $assinaturas3[0]->sequencia
-                ];
+        // if ($ass3 != 0) {
+        //     if ($quantidade[0]->qntAss < 3) {
+        //         $dados = [
+        //             "posicaoX" => $X3,
+        //             "posicaoY" => $Y3,
+        //             "tamanho" => $tamanho,
+        //             "evento" => $InfoTopCertificado[0]->seqEvento,
+        //             "assinatura" => $assinaturas3[0]->sequencia
+        //         ];
 
-                $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-            }
-        }
+        //         $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados);
+        //     }
+        // }
 
-        if ($quantidade[0]->qntAss < 3) {
-            $dados = [
-                "posicaoX" => $X,
-                "posicaoY" => $Y,
-                "tamanho" => $tamanho,
-                "evento" => $InfoTopCertificado[0]->seqEvento,
-                "assinatura" => $assinaturas[0]->sequencia
-            ];
+        // if ($quantidade[0]->qntAss < 3) {
+        //     $dados = [
+        //         "posicaoX" => $X,
+        //         "posicaoY" => $Y,
+        //         "tamanho" => $tamanho,
+        //         "evento" => $InfoTopCertificado[0]->seqEvento,
+        //         "assinatura" => $assinaturas[0]->sequencia
+        //     ];
 
-            $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
-        }
+        //     $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
+        // }
 
         Session::destroy();
 
-        echo json_encode($msg);
+        // echo json_encode($msg);
     }
 }
