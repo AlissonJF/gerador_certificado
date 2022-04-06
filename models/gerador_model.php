@@ -10,6 +10,117 @@ class Gerador_Model extends Model
         Auth::autentica();
     }
 
+    public function arrumaPosicao()
+    {
+        // $email = $_SESSION['email'];
+        // $nome = $_SESSION['nome'];
+        // $cpf = $_SESSION['cpf'];
+        $X = intval($_POST['posicaoX']);
+        $X2 = intval($_POST['posicaoX2']);
+        $X3 = intval($_POST['posicaoX3']);
+        $Y = intval($_POST['posicaoY']);
+        $Y2 = intval($_POST['posicaoY2']);
+        $Y3 = intval($_POST['posicaoY3']);
+        $move = intval($_POST['AssMove']);
+        $tamanho = intval($_POST['tamanho1']);
+        $tamanho2 = intval($_POST['tamanho1']);
+        $tamanho3 = intval($_POST['tamanho1']);
+
+        if (isset($_POST['selectAss1'])) {
+            $select1 = intval($_POST['selectAss1']);
+            if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                }
+                if ($X == 120) {
+                    $X = intval($_POST['posicaoX']);
+                }
+                echo json_encode([
+                    "posicaoX" => $X,
+                    "posicaoY" => $Y,
+                    "tamanho" => $tamanho,
+                    "move" => $move,
+                    "select1" => $select1
+                ]);
+            }
+            if (isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
+                $select2 = intval($_POST['selectAss2']);
+                if ($X == 120) {
+                    $X = 20;
+                }
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                    $tamanho2 = 60;
+                }
+                if ($move == 1) {
+                    $X = intval($_POST['posicaoX']);
+                    $Y = intval($_POST['posicaoY']);
+                    $tamanho = intval($_POST['tamanho']);
+                }
+                if ($move == 3) {
+                    $X2 = intval($_POST['posicaoX2']);
+                    $Y2 = intval($_POST['posicaoY2']);
+                    $tamanho2 = intval($_POST['tamanho']);
+                }
+                echo json_encode([
+                    "posicaoX" => $X,
+                    "posicaoX2" => $X2,
+                    "posicaoY" => $Y,
+                    "posicaoY2" => $Y2,
+                    "tamanho" => $tamanho,
+                    "tamanho2" => $tamanho2,
+                    "move" => $move,
+                    "select1" => $select1,
+                    "select2" => $select2
+                ]);
+            }
+            if (isset($_POST['selectAss2']) && isset($_POST['selectAss3'])) {
+                $select2 = intval($_POST['selectAss2']);
+                $select3 = intval($_POST['selectAss3']);
+                if ($X == 120) {
+                    $X = 20;
+                }
+                if ($tamanho == 0) {
+                    $tamanho = 60;
+                    $tamanho2 = 60;
+                    $tamanho3 = 60;
+                }
+                if ($move == 1) {
+                    $X = intval($_POST['posicaoX']);
+                    $Y = intval($_POST['posicaoY']);
+                    $tamanho = intval($_POST['tamanho']);
+                }
+                if ($move == 2) {
+                    $X3 = intval($_POST['posicaoX3']);
+                    $Y3 = intval($_POST['posicaoY3']);
+                    $tamanho3 = intval($_POST['tamanho3']);
+                }
+                if ($move == 3) {
+                    $X2 = intval($_POST['posicaoX2']);
+                    $Y2 = intval($_POST['posicaoY2']);
+                    $tamanho2 = intval($_POST['tamanho2']);
+                }
+                echo json_encode([
+                    "posicaoX" => $X,
+                    "posicaoX2" => $X2,
+                    "posicaoX3" => $X3,
+                    "posicaoY" => $Y,
+                    "posicaoY2" => $Y2,
+                    "posicaoY3" => $Y3,
+                    "tamanho" => $tamanho,
+                    "tamanho2" => $tamanho2,
+                    "tamanho3" => $tamanho3,
+                    "move" => $move,
+                    "select1" => $select1,
+                    "select2" => $select2,
+                    "select3" => $select3
+                ]);
+            }
+        } else {
+            exit;
+        }
+    }
+
     public function gerador()
     {
         setlocale(LC_ALL, 'pt_BR', 'pt_BR.iso-8859-1', 'pt_BR.utf-8', 'portuguese');
@@ -19,7 +130,7 @@ class Gerador_Model extends Model
 
         // --------- Variáveis para gerar o certificado corretamente --------- //
 
-        $email = $_SESSION['email'];
+        // $email = $_SESSION['email'];
         $nome = $_SESSION['nome'];
         $cpf = $_SESSION['cpf'];
         $X = intval($_POST['posicaoX']);
@@ -33,13 +144,16 @@ class Gerador_Model extends Model
 
         if (isset($_POST['select2'])) {
             $select2 = intval($_POST['select2']);
+            $qntsAss = 2;
             if (isset($_POST['select3'])) {
                 $select3 = intval($_POST['select3']);
+                $qntsAss = 3;
             }
         }
 
         // --------- SCRIPT do Banco de Dados --------- //
-        $participante = $this->db->select('SELECT
+        $participante = $this->db->select(
+            'SELECT
                 *
             FROM
                 participante p
@@ -50,72 +164,39 @@ class Gerador_Model extends Model
             $nome = utf8_decode($participante[0]->nome);
         }
 
-        $assinaturas = $this->db->select('
-            SELECT
-                a.sequencia,
-                a.caminho
+        $assinaturas = $this->db->select(
+            'SELECT
+                *
             FROM
-                participante_evento pe
-            JOIN participante p ON
-                pe.sequencia_participante = p.sequencia
-            JOIN evento e ON
-                pe.evento = e.sequencia
-            JOIN assinaturas a ON
-                pe.assinatura = a.sequencia
+                assinaturas a
             WHERE
-                p.sequencia = :seq AND
                 a.sequencia = :ass
-        ', array(
-            ":seq" => $participante[0]->sequencia,
-            ":ass" => $select1
-        ));
+        ', array(":ass" => $select1));
 
         if ($select2 != 0) {
-            $assinaturas2 = $this->db->select('
-                SELECT
-                    a.sequencia,
-                    a.caminho
+            $assinaturas2 = $this->db->select(
+                'SELECT
+                    *
                 FROM
-                    participante_evento pe
-                JOIN participante p ON
-                    pe.sequencia_participante = p.sequencia
-                JOIN evento e ON
-                    pe.evento = e.sequencia
-                JOIN assinaturas a ON
-                    pe.assinatura = a.sequencia
+                    assinaturas a
                 WHERE
-                    p.sequencia = :seq AND
                     a.sequencia = :ass
-            ', array(
-                ":seq" => $participante[0]->sequencia,
-                ":ass" => $select2
-            ));
+            ', array(":ass" => $select2));
         }
 
         if ($select3 != 0) {
-            $assinaturas3 = $this->db->select('
-                SELECT
-                    a.sequencia,
-                    a.caminho
+            $assinaturas3 = $this->db->select(
+                'SELECT
+                    *
                 FROM
-                    participante_evento pe
-                JOIN participante p ON
-                    pe.sequencia_participante = p.sequencia
-                JOIN evento e ON
-                    pe.evento = e.sequencia
-                JOIN assinaturas a ON
-                    pe.assinatura = a.sequencia
+                    assinaturas a
                 WHERE
-                    p.sequencia = :seq AND
                     a.sequencia = :ass
-            ', array(
-                ":seq" => $participante[0]->sequencia,
-                ":ass" => $select3
-            ));
+            ', array(":ass" => $select3));
         }
 
-        $InfoTopCertificado = $this->db->select("
-            SELECT
+        $InfoTopCertificado = $this->db->select(
+            "SELECT
                 p.sequencia seqParticipante,
                 p.nome participante,
                 p.email,
@@ -173,6 +254,22 @@ class Gerador_Model extends Model
         // --------- Insere a assinatura no certificado (Se houver mais de uma assinatura, será mudado as posições) --------- //
 
         $pdf->Image($printAss, $X, $Y, $tamanho);
+        if ($qntsAss == 2) {
+            $X2 = $_POST['posicaoX2'];
+            $Y2 = $_POST['posicaoY2'];
+            $tamanho2 = $_POST['tamanho2'];
+            $pdf->Image($printAss2, $X2, $Y2, $tamanho);
+        }
+        if ($qntsAss == 3) {
+            $X2 = $_POST['posicaoX2'];
+            $X3 = $_POST['posicaoX3'];
+            $Y2 = $_POST['posicaoY2'];
+            $Y3 = $_POST['posicaoY3'];
+            $tamanho2 = $_POST['tamanho2'];
+            $tamanho3 = $_POST['tamanho3'];
+            $pdf->Image($printAss2, $X2, $Y2, $tamanho2);
+            $pdf->Image($printAss3, $X3, $Y3, $tamanho3);
+        }
 
         // opacidade total
         $pdf->SetAlpha(1);
@@ -215,113 +312,10 @@ class Gerador_Model extends Model
         ]);
     }
 
-    public function arrumaPosicao()
-    {
-        $email = $_SESSION['email'];
-        $nome = $_SESSION['nome'];
-        $cpf = $_SESSION['cpf'];
-        $X = intval($_POST['posicaoX']);
-        $X2 = intval($_POST['posicaoX2']);
-        $X3 = intval($_POST['posicaoX3']);
-        $Y = intval($_POST['posicaoY']);
-        $Y2 = intval($_POST['posicaoY2']);
-        $Y3 = intval($_POST['posicaoY3']);
-        $move = intval($_POST['AssMove']);
-        $tamanho = intval($_POST['tamanho1']);
-        $tamanho2 = intval($_POST['tamanho1']);
-        $tamanho3 = intval($_POST['tamanho1']);
-        $select1 = intval($_POST['selectAss1']);
-
-        if (isset($_POST['selectAss1'])) {
-            if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
-                if ($tamanho == 0) {
-                    $tamanho = 60;
-                }
-                echo json_encode([
-                    "posicaoX" => $X,
-                    "posicaoY" => $Y,
-                    "tamanho" => $tamanho,
-                    "move" => $move,
-                    "select1" => $select1
-                ]);
-            }
-            if (isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
-                $select2 = intval($_POST['selectAss2']);
-                $X2 = 210;
-                if ($tamanho == 0) {
-                    $tamanho = 60;
-                    $tamanho2 = 60;
-                }
-                if ($move == 1) {
-                    $X = intval($_POST['posicaoX']);
-                    $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho1']);
-                }
-                if ($move == 2) {
-                    $X2 = intval($_POST['posicaoX2']);
-                    $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho1']);
-                }
-                echo json_encode([
-                    "posicaoX" => $X,
-                    "posicaoX2" => $X2,
-                    "posicaoY" => $Y,
-                    "posicaoY2" => $Y2,
-                    "tamanho" => $tamanho,
-                    "tamanho2" => $tamanho2,
-                    "move" => $move,
-                    "select1" => $select1,
-                    "select2" => $select2
-                ]);
-            }
-            if (isset($_POST['selectAss2']) && isset($_POST['selectAss3'])) {
-                $select2 = intval($_POST['selectAss2']);
-                $select3 = intval($_POST['selectAss3']);
-                if ($tamanho == 0) {
-                    $tamanho = 60;
-                    $tamanho2 = 60;
-                    $tamanho3 = 60;
-                }
-                if ($move == 1) {
-                    $X = intval($_POST['posicaoX']);
-                    $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho1']);
-                }
-                if ($move == 2) {
-                    $X2 = intval($_POST['posicaoX2']);
-                    $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho1']);
-                }
-                if ($move == 3) {
-                    $X3 = intval($_POST['posicaoX3']);
-                    $Y3 = intval($_POST['posicaoY3']);
-                    $tamanho3 = intval($_POST['tamanho1']);
-                }
-                echo json_encode([
-                    "posicaoX" => $X,
-                    "posicaoX2" => $X2,
-                    "posicaoX3" => $X3,
-                    "posicaoY" => $Y,
-                    "posicaoY2" => $Y2,
-                    "posicaoY3" => $Y3,
-                    "tamanho" => $tamanho,
-                    "tamanho2" => $tamanho2,
-                    "tamanho3" => $tamanho3,
-                    "move" => $move,
-                    "select1" => $select1,
-                    "select2" => $select2,
-                    "select3" => $select3
-                ]);
-            }
-        } else {
-            exit;
-        }
-    }
-
     public function selectAssinatura()
     {
-        $sql = $this->db->select("
-            SELECT
+        $sql = $this->db->select(
+            "SELECT
                 *
             FROM
                 assinaturas a");
@@ -330,13 +324,13 @@ class Gerador_Model extends Model
 
     public function savePosition()
     {
-        $quantidade = $this->db->select("
-                SELECT
-                    count(p.sequencia) qntAss
-                FROM
-                    posicaotamanho p
-                JOIN assinaturas a ON
-                    p.assinatura = a.sequencia
+        $quantidade = $this->db->select(
+            "SELECT
+                count(p.sequencia) qntAss
+            FROM
+                posicaotamanho p
+            JOIN assinaturas a ON
+                p.assinatura = a.sequencia
         ");
 
         // if ($ass2 != 0) {

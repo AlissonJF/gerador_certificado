@@ -1,7 +1,7 @@
-$(document).ready(function () {
-    let posicaoX = 20; // MAX UP posicao X = 210px MIN DOWN posicao X = 20px
-    let posicaoX2 = 120;
-    let posicaoX3 = 210;
+$(document).ready(function() {
+    let posicaoX = 120; // MAX UP posicao X = 210px MIN DOWN posicao X = 20px
+    let posicaoX2 = 210;
+    let posicaoX3 = 120;
     let posicaoY = 140; // MAX UP posicao Y = 130px MIN DOWN posicao Y = 150px
     let posicaoY2 = 140;
     let posicaoY3 = 140;
@@ -9,39 +9,39 @@ $(document).ready(function () {
     let tamanho2 = 60;
     let tamanho3 = 60;
 
-    $('.ArrowUP').click(function () {
+    $('.ArrowUP').click(function() {
         posicaoY -= 10;
         posicaoY2 -= 10;
         posicaoY3 -= 10;
         $("#formCertificado").submit();
     });
 
-    $('.ArrowDown').click(function () {
+    $('.ArrowDown').click(function() {
         posicaoY += 10;
         posicaoY2 += 10;
         posicaoY3 += 10;
         $("#formCertificado").submit();
     });
 
-    $('.ArrowLeft').click(function () {
+    $('.ArrowLeft').click(function() {
         posicaoX -= 10;
         posicaoX2 -= 10;
         posicaoX3 -= 10;
         $("#formCertificado").submit();
     });
 
-    $('.ArrowRight').click(function () {
+    $('.ArrowRight').click(function() {
         posicaoX += 10;
         posicaoX2 += 10;
         posicaoX3 += 10;
         $("#formCertificado").submit();
     });
 
-    $(document).on("click", "#verCertificado", function () {
+    $(document).on("click", "#verCertificado", function() {
         $("#formCertificado").submit()
     });
 
-    $(document).on("submit", "#formCertificado", function (event) {
+    $(document).on("submit", "#formCertificado", function(event) {
         event.preventDefault();
         arrumaPosicao(this)
     });
@@ -65,7 +65,7 @@ $(document).ready(function () {
         $.post(BASEURL + "/gerador/arrumaPosicao", `${$(dados).serialize()}
         &posicaoX=${posicaoX}&posicaoY=${posicaoY}&tamanho=${tamanho}
         &posicaoX2=${posicaoX2}&posicaoY2=${posicaoY2}&tamanho2=${tamanho2}
-        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}&tamanho3=${tamanho3}`, function (data) {
+        &posicaoX3=${posicaoX3}&posicaoY3=${posicaoY3}&tamanho3=${tamanho3}`, function(data) {
             if (data == '') {
                 swal("Oops", 'Não foi possível continuar! Verifique se há alguma assinatura selecionada.', "error");
             }
@@ -84,8 +84,7 @@ $(document).ready(function () {
     }
 
     function updateCertificado(dados) {
-        $.post(BASEURL + "/gerador/gerador", dados, function (data) {
-            console.log(data)
+        $.post(BASEURL + "/gerador/gerador", dados, function(data) {
             data = JSON.parse(data);
             let qntAss = parseInt(data.qntAss);
             let aluno = data.aluno;
@@ -101,16 +100,19 @@ $(document).ready(function () {
             if (data.move == 1) {
                 $("#posicaoX").val(posicaoX + 'px');
                 $("#posicaoY").val(posicaoY + 'px');
+                $("#tamanho1").val(tamanho + 'px');
             }
             if (data.move == 2) {
-                $("#posicaoX").val(posicaoX2 + 'px');
-                $("#posicaoY").val(posicaoY2 + 'px');
-            }
-            if (data.move == 3) {
                 $("#posicaoX").val(posicaoX3 + 'px');
                 $("#posicaoY").val(posicaoY3 + 'px');
+                $("#tamanho1").val(tamanho3 + 'px');
             }
-            $("#tamanho").val(tamanho + 'px');
+            if (data.move == 3) {
+                $("#posicaoX").val(posicaoX2 + 'px');
+                $("#posicaoY").val(posicaoY2 + 'px');
+                $("#tamanho1").val(tamanho2 + 'px');
+            }
+            $("#tamanho1").val(tamanho + 'px');
 
             const positions = {
                 "Ass": [posicaoX, posicaoY],
@@ -120,7 +122,7 @@ $(document).ready(function () {
                 "aluno": [aluno[0]],
             };
 
-            $(document).on("click", "#SalvarDados", function () {
+            $(document).on("click", "#SalvarDados", function() {
                 axios.post(BASEURL + "/gerador/savePosition", positions).then(res => {
                     if (res.data.codigo == "1") {
                         swal("", res.data.texto, "success");
