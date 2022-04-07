@@ -12,9 +12,6 @@ class Gerador_Model extends Model
 
     public function arrumaPosicao()
     {
-        // $email = $_SESSION['email'];
-        // $nome = $_SESSION['nome'];
-        // $cpf = $_SESSION['cpf'];
         $X = intval($_POST['posicaoX']);
         $X2 = intval($_POST['posicaoX2']);
         $X3 = intval($_POST['posicaoX3']);
@@ -29,11 +26,10 @@ class Gerador_Model extends Model
         if (isset($_POST['selectAss1'])) {
             $select1 = intval($_POST['selectAss1']);
             if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
-                if ($tamanho == 0) {
+                if ($X == 0) {
+                    $X = 120;
+                    $Y = 140;
                     $tamanho = 60;
-                }
-                if ($X == 120) {
-                    $X = intval($_POST['posicaoX']);
                 }
                 echo json_encode([
                     "posicaoX" => $X,
@@ -45,22 +41,25 @@ class Gerador_Model extends Model
             }
             if (isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
                 $select2 = intval($_POST['selectAss2']);
-                if ($X == 120) {
+                if ($X == 0) {
                     $X = 20;
-                }
-                if ($tamanho == 0) {
+                    $X2 = 210;
+                    $Y = 140;
+                    $Y2 = 140;
                     $tamanho = 60;
                     $tamanho2 = 60;
                 }
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho']);
+                    $tamanho = intval($_POST['tamanho1']);
+                    var_dump("ta aqui primeiro");
                 }
-                if ($move == 3) {
+                if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho']);
+                    $tamanho2 = intval($_POST['tamanho1']);
+                    var_dump("ta aqui");
                 }
                 echo json_encode([
                     "posicaoX" => $X,
@@ -77,10 +76,13 @@ class Gerador_Model extends Model
             if (isset($_POST['selectAss2']) && isset($_POST['selectAss3'])) {
                 $select2 = intval($_POST['selectAss2']);
                 $select3 = intval($_POST['selectAss3']);
-                if ($X == 120) {
+                if ($X == 0) {
                     $X = 20;
-                }
-                if ($tamanho == 0) {
+                    $X2 = 120;
+                    $X3 = 210;
+                    $Y = 140;
+                    $Y2 = 140;
+                    $Y3 = 140;
                     $tamanho = 60;
                     $tamanho2 = 60;
                     $tamanho3 = 60;
@@ -88,17 +90,17 @@ class Gerador_Model extends Model
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
-                    $tamanho = intval($_POST['tamanho']);
+                    $tamanho = intval($_POST['tamanho1']);
                 }
                 if ($move == 2) {
-                    $X3 = intval($_POST['posicaoX3']);
-                    $Y3 = intval($_POST['posicaoY3']);
-                    $tamanho3 = intval($_POST['tamanho3']);
-                }
-                if ($move == 3) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
-                    $tamanho2 = intval($_POST['tamanho2']);
+                    $tamanho2 = intval($_POST['tamanho1']);
+                }
+                if ($move == 3) {
+                    $X3 = intval($_POST['posicaoX3']);
+                    $Y3 = intval($_POST['posicaoY3']);
+                    $tamanho3 = intval($_POST['tamanho1']);
                 }
                 echo json_encode([
                     "posicaoX" => $X,
