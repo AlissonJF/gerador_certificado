@@ -18,11 +18,13 @@ class Gerador_Model extends Model
         $Y = intval($_POST['posicaoY']);
         $Y2 = intval($_POST['posicaoY2']);
         $Y3 = intval($_POST['posicaoY3']);
-        $move = intval($_POST['AssMove']);
-        $tamanho = intval($_POST['tamanho1']);
-        $tamanho2 = intval($_POST['tamanho1']);
-        $tamanho3 = intval($_POST['tamanho1']);
+        $move = intval($_POST['assinaturaSelecionada']);
+        $tamanho = intval($_POST['tamanho']);
+        $tamanho2 = intval($_POST['tamanho2']);
+        $tamanho3 = intval($_POST['tamanho3']);
+        //var_dump($_POST); exit;
 
+        // Validações das assinaturas
         if (isset($_POST['selectAss1'])) {
             $select1 = intval($_POST['selectAss1']);
             if (!isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
@@ -41,25 +43,23 @@ class Gerador_Model extends Model
             }
             if (isset($_POST['selectAss2']) && !isset($_POST['selectAss3'])) {
                 $select2 = intval($_POST['selectAss2']);
-                if ($X == 0) {
+                if ($X == 0 || $X2 == 0 || empty($X2)) {
                     $X = 20;
                     $X2 = 210;
                     $Y = 140;
                     $Y2 = 140;
                     $tamanho = 60;
                     $tamanho2 = 60;
-                }
-                if ($move == 1) {
+                } else if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
                     $Y = intval($_POST['posicaoY']);
                     $tamanho = intval($_POST['tamanho1']);
-                    var_dump("ta aqui primeiro");
-                }
-                if ($move == 2) {
+                    // var_dump("ta aqui primeiro");
+                } else if ($move == 2) {
                     $X2 = intval($_POST['posicaoX2']);
                     $Y2 = intval($_POST['posicaoY2']);
                     $tamanho2 = intval($_POST['tamanho1']);
-                    var_dump("ta aqui");
+                    // var_dump("ta aqui");
                 }
                 echo json_encode([
                     "posicaoX" => $X,
@@ -76,7 +76,7 @@ class Gerador_Model extends Model
             if (isset($_POST['selectAss2']) && isset($_POST['selectAss3'])) {
                 $select2 = intval($_POST['selectAss2']);
                 $select3 = intval($_POST['selectAss3']);
-                if ($X == 0) {
+                if ($X == 0 || $X2 == 0 || $X3 == 0 || empty($X2) || empty($X3)) {
                     $X = 20;
                     $X2 = 120;
                     $X3 = 210;
@@ -86,6 +86,7 @@ class Gerador_Model extends Model
                     $tamanho = 60;
                     $tamanho2 = 60;
                     $tamanho3 = 60;
+                    //var_dump("ta aqui"); exit;
                 }
                 if ($move == 1) {
                     $X = intval($_POST['posicaoX']);
@@ -209,19 +210,17 @@ class Gerador_Model extends Model
                 DATE_FORMAT(e.datafinal, '%d/%m/%Y') AS datafinal,
                 e.ch,
                 e.descricao,
-                pe.sequencia_participante,
-                pe.evento
+                d.participantes,
+                d.eventos
             FROM
-                participante_evento pe
+                documentos d
             JOIN participante p ON
-                p.sequencia = pe.sequencia_participante
+                p.sequencia = d.participantes
             JOIN evento e ON
-                pe.evento = e.sequencia
+                d.eventos = e.sequencia
             WHERE
                 p.cpf = :cpf
             ", array(":cpf" => $cpf));
-
-        $seqEvento = $InfoTopCertificado[0]->seqEvento;
 
         // --------- Variáveis que podem vir de um banco de dados por exemplo ----- //
         $infoTop = "A Universidade de Marília - UNIMAR, nos termos do artigo 111, parágrafo 1°\ndo seu Regimento Geral, certifica que";
@@ -326,57 +325,73 @@ class Gerador_Model extends Model
 
     public function savePosition()
     {
-        $quantidade = $this->db->select(
+        $dados = json_decode(file_get_contents('php://input'));
+        $participantes = $dados->aluno;
+        $assinatura1 = $dados->Ass;
+        $assinatura2 = $dados->Ass2;
+        $assinatura3 = $dados->Ass3;
+        $tamanho = $dados->tamanho;
+
+        $sql = $this->db->select(
             "SELECT
-                count(p.sequencia) qntAss
+                COUNT(p.sequencia) numPositions
             FROM
                 posicaotamanho p
-            JOIN assinaturas a ON
-                p.assinatura = a.sequencia
-        ");
+            JOIN documentos d ON
+                p.documento = d.sequencia
+            WHERE
+                d.participantes = :seq",
+                array(":seq" => $participantes[0]->sequencia)
+        );
+        $sql2 = $this->db->select(
+            "SELECT
+                sequencia
+            FROM
+                documentos d
+            WHERE
+                d.participantes = :seq",
+                array(":seq" => $participantes[0]->sequencia)
+        );
 
-        // if ($ass2 != 0) {
-        //     if ($quantidade[0]->qntAss < 3) {
-        //         $dados = [
-        //             "posicaoX" => $X2,
-        //             "posicaoY" => $Y2,
-        //             "tamanho" => $tamanho,
-        //             "evento" => $InfoTopCertificado[0]->seqEvento,
-        //             "assinatura" => $assinaturas2[0]->sequencia
-        //         ];
+        $msg = array("codigo" => 0, "texto" => "Não foi possível salvar");
 
-        //         $insereInfoBD2 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-        //     }
-        // }
+        $dados = array(
+            [
+                "posicaoX" => $assinatura1[0],
+                "posicaoY" => $assinatura1[1],
+                "tamanho" => $tamanho[0],
+                "documento" => $sql2[0]->sequencia
+            ],
+            [
+                "posicaoX" => $assinatura2[0],
+                "posicaoY" => $assinatura2[1],
+                "tamanho" => $tamanho[1],
+                "documento" => $sql2[0]->sequencia
+            ],
+            [
+                "posicaoX" => $assinatura3[0],
+                "posicaoY" => $assinatura3[1],
+                "tamanho" => $tamanho[2],
+                "documento" => $sql2[0]->sequencia
+            ]
+        );
 
-        // if ($ass3 != 0) {
-        //     if ($quantidade[0]->qntAss < 3) {
-        //         $dados = [
-        //             "posicaoX" => $X3,
-        //             "posicaoY" => $Y3,
-        //             "tamanho" => $tamanho,
-        //             "evento" => $InfoTopCertificado[0]->seqEvento,
-        //             "assinatura" => $assinaturas3[0]->sequencia
-        //         ];
+        for ($i = 0; $i <= $sql[0]->numPositions; $i++) {
 
-        //         $insereInfoBD3 = $this->db->insert("asscertificado.posicaotamanho", $dados);
-        //     }
-        // }
+            if ($assinatura2[0] == null && $assinatura3[0] == null) {
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[0]);
+                $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
+            } else if ($assinatura2[0] != null && $assinatura3[0] == null) {
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[1]);
+                $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
+            } else if ($assinatura2[0] != null && $assinatura3[0] != null) {
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[2]);
+                $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
+            }
+        }
+            
+        echo json_encode($msg);
 
-        // if ($quantidade[0]->qntAss < 3) {
-        //     $dados = [
-        //         "posicaoX" => $X,
-        //         "posicaoY" => $Y,
-        //         "tamanho" => $tamanho,
-        //         "evento" => $InfoTopCertificado[0]->seqEvento,
-        //         "assinatura" => $assinaturas[0]->sequencia
-        //     ];
-
-        //     $insereInfoBD = $this->db->insert("asscertificado.posicaotamanho", $dados);
-        // }
-
-        Session::destroy();
-
-        // echo json_encode($msg);
+        // Session::destroy();
     }
 }

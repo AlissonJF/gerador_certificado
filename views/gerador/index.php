@@ -28,7 +28,7 @@
 
                 <p><strong>Movimentação da Assinatura</strong></p>
 
-                <div class="col-md-6" style="padding-left: 45%">
+                <div class="col-md-6" id="UP" style="padding-left: 45%; height: 30px;">
                     <div class="ArrowUP">
                         <div id="cta">
                             <span class="arrow primera next "></span>
@@ -37,14 +37,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="form-outline" style="visibility: hidden" id="SelectMove">
-                        <select id="AssMove" name="AssMove" class="btn btn-default col-md-12">
-                            <option value="0" selected>Mover Assinatura</option>
-                            <option value="1">Assinatura 1 (lado esquerdo)</option>
-                            <option value="2">Assinatura 2 (lado meio)</option>
-                            <option value="3">Assinatura 3 (lado direito)</option>
-                        </select>
-                    </div>
+                    <div class="form-outline" style="visibility: hidden" id="SelectMove"></div>
                 </div>
                 <p></p>
                 <div class="col-md-6" style="padding-left: 35%">
