@@ -2,7 +2,7 @@
     <form class="form-horizontal" method="post" id="InfoCertificado">
         <fieldset>
             <div class="row">
-                <div>
+                <div style="margin-left: 24%;">
                     <div class="col col-md-6" id="FormBasic">
                         <p class="text-center"><strong>Aluno</strong></p>
                         <div class="col-md-12 mb-3">

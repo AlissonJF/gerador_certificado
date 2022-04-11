@@ -15,11 +15,11 @@ class Index_Model extends Model
         $recebe_contrast = $_POST['contrast'];
 
         // Manda a imagem renomeada para outra pasta e ativa o script em Python
-        $file_contrast = fopen('public/images/contrast.txt', 'w');
-        $assinatura = rename($img, 'public/images/assinatura.jpeg');
-        $contrast = file_put_contents('public/images/contrast.txt', $recebe_contrast);
+        fopen('public/images/contrast.txt', 'w');
+        rename($img, 'public/images/assinatura.jpeg');
+        file_put_contents('public/images/contrast.txt', $recebe_contrast);
         $command = escapeshellcmd('python views/index/script.py');
-        $output = shell_exec($command);
+        shell_exec($command);
 
         // transforma a imagem sem fundo em base64
         header('Content-type:image/png');
@@ -67,8 +67,8 @@ class Index_Model extends Model
         $email = $_POST['email']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
         $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");
 
-        $result = $this->db->select("
-            SELECT
+        $result = $this->db->select(
+            "SELECT
                 nome,
                 email,
                 cpf
@@ -78,8 +78,8 @@ class Index_Model extends Model
                 email = :email
                 AND cpf = :cpf",
             array(
-                ":cpf" => $cpf,
-                ":email" => $email
+                ":cpf" => $cpf[0],
+                ":email" => $email[0]
             ));
 
         if ($result) {
