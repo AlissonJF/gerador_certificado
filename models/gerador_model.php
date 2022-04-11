@@ -375,23 +375,27 @@ class Gerador_Model extends Model
                 "documento" => $sql2[0]->sequencia
             ]
         );
+        // var_dump($dados[2]); exit;
 
-        for ($i = 0; $i <= $sql[0]->numPositions; $i++) {
+        if ($sql[0]->numPositions <= 3) {
 
             if ($assinatura2[0] == null && $assinatura3[0] == null) {
                 $result = $this->db->insert("asscertificado.posicaotamanho", $dados[0]);
                 $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
             } else if ($assinatura2[0] != null && $assinatura3[0] == null) {
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[0]);
                 $result = $this->db->insert("asscertificado.posicaotamanho", $dados[1]);
                 $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
             } else if ($assinatura2[0] != null && $assinatura3[0] != null) {
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[0]);
+                $result = $this->db->insert("asscertificado.posicaotamanho", $dados[1]);
                 $result = $this->db->insert("asscertificado.posicaotamanho", $dados[2]);
                 $msg = array("codigo" => 1, "texto" => "Salvo com sucesso");
             }
         }
-            
-        echo json_encode($msg);
 
-        // Session::destroy();
+        Session::destroy();
+        
+        echo json_encode($msg);
     }
 }

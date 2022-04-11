@@ -7,7 +7,13 @@ function formatar(mascara, documento) {
     }
 }
 
-$(document).ready(function () {
+function loadData() {
+    $("#AbrirRemoveBackground").css("visibility", "hidden");
+    $("#RemoveAssinaturaAqui").css("visibility", "visible");
+    $("#RemoveAssinaturaAqui2").css("visibility", "visible");
+}
+
+$(document).ready(function() {
     var imgFile = $('#receiveFile')
     var contrast = $('#ajusteContraste')
     $('#InfoCertificado').bootstrapValidator({
@@ -31,7 +37,7 @@ $(document).ready(function () {
                 validators: {
                     callback: {
                         message: 'CPF inválido',
-                        callback: function (value) {
+                        callback: function(value) {
                             // retira mascara e não números
                             cpf = value.replace(/[^\d]+/g, '');
                             if (cpf == '') return false;
@@ -70,7 +76,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("click", "#GeraCerti", function () {
+    $(document).on("click", "#GeraCerti", function() {
         var infos = $("#InfoCertificado").submit()
         axios.post(BASEURL + "/index/GeraCertificado", `${$(infos).serialize()}`)
             .then(res => {
@@ -82,7 +88,7 @@ $(document).ready(function () {
             })
     });
 
-    $(document).on("click", "#removeBackground", function () {
+    $(document).on("click", "#removeBackground", function() {
         var infos = $("#InfoCertificado").submit()
         axios.post(BASEURL + "/index/saveImage", `${$(infos).serialize()}`)
             .then(res => {
@@ -94,19 +100,19 @@ $(document).ready(function () {
             })
     });
 
-    $("#receiveFile").change(function () {
+    $("#receiveFile").change(function() {
         readURL(this);
     });
 
-    $(document).on("change", "#receiveFile", function (event) {
+    $(document).on("change", "#receiveFile", function(event) {
         RemoveBackground();
     });
 
-    $(document).on("change", "#ajusteContraste", function (event) {
+    $(document).on("change", "#ajusteContraste", function(event) {
         RemoveBackground();
     });
 
-    $(document).on("submit", "#InfoCertificado", function (event) {
+    $(document).on("submit", "#InfoCertificado", function(event) {
         event.preventDefault();
     });
 
@@ -120,7 +126,7 @@ $(document).ready(function () {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#printImage').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);

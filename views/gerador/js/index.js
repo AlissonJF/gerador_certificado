@@ -11,6 +11,7 @@ $(document).ready(function() {
     let qntAss = 0;
     let assinaturaSelecionada = 0;
     let moveAss = 0;
+    let positions = {};
 
     $('.ArrowUP').click(function() {
 
@@ -138,7 +139,7 @@ $(document).ready(function() {
             qntAss = parseInt(data.qntAss);
             moveAss = parseInt(data.move);
             let aluno = data.aluno;
-            $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="650">`);
+            $("#viewPDF").html(`<embed style="border-radius: 5px; box-shadow: 6px 6px 8px" src="${data.arquivo}" width="850" height="600">`);
             if (qntAss == 1) {
                 $("#SelectMove").css("visibility", "hidden");
                 $("#UP").css("height", "0px")
@@ -166,27 +167,26 @@ $(document).ready(function() {
                 $("#tamanho1").val(tamanho3 + 'px');
             }
 
-            const positions = {
+            positions = {
                 "Ass": [posicaoX, posicaoY],
                 "Ass2": [posicaoX2, posicaoY2],
                 "Ass3": [posicaoX3, posicaoY3],
                 "tamanho": [tamanho, tamanho2, tamanho3],
                 "aluno": [aluno[0]],
             };
-            console.log(positions)
-
-            $(document).on("click", "#SalvarDados", function() {
-                axios.post(BASEURL + "/gerador/savePosition", positions).then(res => {
-                    if (res.data.codigo == "1") {
-                        swal("", res.data.texto, "success");
-                    }
-                    if (res.data.codigo == "0") {
-                        swal("Oops", res.data.texto, "error")
-                    }
-                });
-            })
         });
     }
+
+    $(document).on("click", "#SalvarDados", function() {
+        axios.post(BASEURL + "/gerador/savePosition", positions).then(res => {
+            if (res.data.codigo == "1") {
+                swal("", res.data.texto, "success");
+            }
+            if (res.data.codigo == "0") {
+                swal("Oops", res.data.texto, "error")
+            }
+        });
+    })
 
     $(document).on("change", "#SelectMove", function(valor) {
         assinaturaSelecionada = valor.target.value
