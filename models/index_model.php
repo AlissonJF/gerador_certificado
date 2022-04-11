@@ -81,6 +81,7 @@ class Index_Model extends Model
                 ":cpf" => $cpf,
                 ":email" => $email
             ));
+        exit;
 
         if ($result) {
             Session::init();
