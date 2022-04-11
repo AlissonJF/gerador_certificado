@@ -22,7 +22,6 @@ class Gerador_Model extends Model
         $tamanho = intval($_POST['tamanho']);
         $tamanho2 = intval($_POST['tamanho2']);
         $tamanho3 = intval($_POST['tamanho3']);
-        //var_dump($_POST); exit;
 
         // Validações das assinaturas
         if (isset($_POST['selectAss1'])) {

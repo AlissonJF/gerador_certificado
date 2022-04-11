@@ -21,7 +21,7 @@
                 </div>
                 <div id="AbrirModal" class="text-center mb-3">
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                    <button type="button" class="btn btn-primary" style="background-color: #005BAA;" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
                         Adicionar Assinatura
                     </button>
                 </div>
