@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="FormRemoveBackground" hidden>
+                <!-- <div id="FormRemoveBackground" hidden>
                     <div class="col col-md-6">
                         <p class="text-center"><strong>Aluno</strong></p>
                         <div class="col-md-12 mb-3">
@@ -69,7 +69,7 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="form-outline text-center">
                 <button type="button" id="GeraCerti" class="btn btn-dark">Gerar Certificado</button>

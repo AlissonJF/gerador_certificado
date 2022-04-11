@@ -78,8 +78,8 @@ class Index_Model extends Model
                 email = :email
                 AND cpf = :cpf",
             array(
-                ":cpf" => $cpf[0],
-                ":email" => $email[0]
+                ":cpf" => $cpf,
+                ":email" => $email
             ));
 
         if ($result) {
