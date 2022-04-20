@@ -31,6 +31,17 @@ class Index_Model extends Model
         echo json_encode($base64);
     }
 
+    public function selectEvento() {
+        $sql = $this->db->select(
+            "SELECT
+                sequencia,
+                nome
+            FROM
+                evento"
+        );
+        echo json_encode($sql);
+    }
+
     public function saveImage()
     {
         $name = $_POST['nomeImage'];
@@ -66,9 +77,21 @@ class Index_Model extends Model
         $cpf = $_POST['cpf']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
         $email = $_POST['email']; // Esta variável é usada para buscar as informações no banco de dados para o certificado
         $msg = array("codigo" => 0, "texto" => "Falha ao tentar prosseguir.");
+        $evento = $_POST['selectEvento'];
 
-        $result = $this->db->select(
+        $eventos = $this->db->select(
             "SELECT
+                *
+            FROM
+                evento e
+            WHERE
+                e.sequencia = :seq"
+            ,array(":seq" => $evento)
+        );
+
+        $participante = $this->db->select(
+            "SELECT
+                sequencia,
                 nome,
                 email,
                 cpf
@@ -81,14 +104,37 @@ class Index_Model extends Model
                 ":cpf" => $cpf,
                 ":email" => $email
             ));
+        $participaEvento = $this->db->select(
+            "SELECT
+                *
+            FROM
+                documentos d
+            WHERE
+                d.participantes = :seq"
+            ,array(":seq" => $participante[0]->sequencia)
+        );
 
-        if ($result) {
+        if ($participaEvento) {
             Session::init();
-            Session::set('nome', $result[0]->nome);
-            Session::set('email', $result[0]->email);
-            Session::set('cpf', $result[0]->cpf);
+            Session::set('nome', $participante[0]->nome);
+            Session::set('email', $participante[0]->email);
+            Session::set('cpf', $participante[0]->cpf);
             Session::set('logado', true);
             $msg = array("codigo" => 1, "texto" => "OK");
+        } else {
+            $dados = [
+                "participantes" => $participante[0]->sequencia,
+                "eventos" => $eventos[0]->sequencia
+            ];
+            $result = $this->db->insert("asscertificado.documentos", $dados);
+            if ($result) {
+                Session::init();
+                Session::set('nome', $participante[0]->nome);
+                Session::set('email', $participante[0]->email);
+                Session::set('cpf', $participante[0]->cpf);
+                Session::set('logado', true);
+                $msg = array("codigo" => 1, "texto" => "OK");
+            }
         }
         echo json_encode($msg);
     }

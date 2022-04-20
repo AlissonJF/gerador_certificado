@@ -7,11 +7,17 @@ function formatar(mascara, documento) {
     }
 }
 
-function loadData() {
-    $("#AbrirRemoveBackground").css("visibility", "hidden");
-    $("#RemoveAssinaturaAqui").css("visibility", "visible");
-    $("#RemoveAssinaturaAqui2").css("visibility", "visible");
+function selectEvento() {
+    getUrl(BASEURL + "/index/selectEvento").then(res => {
+        var txt = `<option selected disabled>SELECIONE O EVENTO</option>`;
+
+        res.data.forEach(element => {
+            txt += `<option value=${element.sequencia}>${element.nome}</option>`
+        });
+        $("#selectEvento").html(txt);
+    })
 }
+selectEvento();
 
 $(document).ready(function() {
     var imgFile = $('#receiveFile')
@@ -78,6 +84,7 @@ $(document).ready(function() {
 
     $(document).on("click", "#GeraCerti", function() {
         var infos = $("#InfoCertificado").submit()
+        console.log($(infos).serialize())
         axios.post(BASEURL + "/index/GeraCertificado", `${$(infos).serialize()}`)
             .then(res => {
                 if (res.data.codigo == "1") {

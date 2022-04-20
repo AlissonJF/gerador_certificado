@@ -17,6 +17,11 @@
                                 <label class="form-label" for="cpf">CPF*</label>
                             </div>
                         </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="form-outline">
+                                <select id="selectEvento" name="selectEvento" class="btn btn-default col-md-12"></select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div id="AbrirModal" class="text-center mb-3">

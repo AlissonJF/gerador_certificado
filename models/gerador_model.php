@@ -154,16 +154,14 @@ class Gerador_Model extends Model
         }
 
         // --------- SCRIPT do Banco de Dados --------- //
-        $participante = $this->db->select(
+        $eventos = $this->db->select(
             'SELECT
                 *
             FROM
-                participante p
-            WHERE
-                p.cpf = :cpf', array(":cpf" => $cpf));
+                evento e');
 
-        if ($participante != null) {
-            $nome = utf8_decode($participante[0]->nome);
+        if ($eventos != null) {
+            $nome = utf8_decode($eventos[0]->nome);
         }
 
         $assinaturas = $this->db->select(
@@ -307,7 +305,7 @@ class Gerador_Model extends Model
             "tamanho" => $tamanho,
             "move" => $move,
             "qntAss" => $qntsAss,
-            "aluno" => $participante,
+            "aluno" => $eventos,
             "arquivo" => "data:application/pdf;base64," . base64_encode($pdfdoc)
         ]);
     }
@@ -325,7 +323,7 @@ class Gerador_Model extends Model
     public function savePosition()
     {
         $dados = json_decode(file_get_contents('php://input'));
-        $participantes = $dados->aluno;
+        $eventos = $dados->eventos;
         $assinatura1 = $dados->Ass;
         $assinatura2 = $dados->Ass2;
         $assinatura3 = $dados->Ass3;
@@ -339,17 +337,17 @@ class Gerador_Model extends Model
             JOIN documentos d ON
                 p.documento = d.sequencia
             WHERE
-                d.participantes = :seq",
-                array(":seq" => $participantes[0]->sequencia)
+                d.eventos = :seq",
+                array(":seq" => $eventos[0]->sequencia)
         );
         $sql2 = $this->db->select(
             "SELECT
                 sequencia
             FROM
-                documentos d
+                evento e
             WHERE
-                d.participantes = :seq",
-                array(":seq" => $participantes[0]->sequencia)
+                e.eventos = :seq",
+                array(":seq" => $eventos[0]->sequencia)
         );
 
         $msg = array("codigo" => 0, "texto" => "Não foi possível salvar");
@@ -359,19 +357,19 @@ class Gerador_Model extends Model
                 "posicaoX" => $assinatura1[0],
                 "posicaoY" => $assinatura1[1],
                 "tamanho" => $tamanho[0],
-                "documento" => $sql2[0]->sequencia
+                "evento" => $sql2[0]->sequencia
             ],
             [
                 "posicaoX" => $assinatura2[0],
                 "posicaoY" => $assinatura2[1],
                 "tamanho" => $tamanho[1],
-                "documento" => $sql2[0]->sequencia
+                "evento" => $sql2[0]->sequencia
             ],
             [
                 "posicaoX" => $assinatura3[0],
                 "posicaoY" => $assinatura3[1],
                 "tamanho" => $tamanho[2],
-                "documento" => $sql2[0]->sequencia
+                "evento" => $sql2[0]->sequencia
             ]
         );
         // var_dump($dados[2]); exit;
