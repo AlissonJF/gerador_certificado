@@ -35,14 +35,6 @@ image_label_overlay = label2rgb(blobs_labels, image=img)
 
 fig, ax = plt.subplots(figsize=(10, 6))
 
-'''
-# plot the connected components (for debugging)
-ax.imshow(image_label_overlay)
-ax.set_axis_off()
-plt.tight_layout()
-plt.show()
-'''
-
 the_biggest_component = 0
 total_area = 0
 counter = 0
@@ -61,15 +53,9 @@ average = (total_area/counter)
 print("the_biggest_component: " + str(the_biggest_component))
 print("average: " + str(average))
 
-# experimental-based ratio calculation, modify it for your cases
-# a4_small_size_outliar_constant is used as a threshold value to remove connected outliar connected pixels
-# are smaller than a4_small_size_outliar_constant for A4 size scanned documents
 a4_small_size_outliar_constant = ((average/constant_parameter_1)*constant_parameter_2)+constant_parameter_3
 print("a4_small_size_outliar_constant: " + str(a4_small_size_outliar_constant))
 
-# experimental-based ratio calculation, modify it for your cases
-# a4_big_size_outliar_constant is used as a threshold value to remove outliar connected pixels
-# are bigger than a4_big_size_outliar_constant for A4 size scanned documents
 a4_big_size_outliar_constant = a4_small_size_outliar_constant*constant_parameter_4
 print("a4_big_size_outliar_constant: " + str(a4_big_size_outliar_constant))
 
@@ -83,16 +69,16 @@ too_small_mask = too_small[pre_version]
 pre_version[too_small_mask] = 0
 # save the the pre-version which is the image is labelled with colors
 # as considering connected components
-#plt.imsave('pre_version.png', pre_version) #commented by Lucas
+#plt.imsave('pre_version.png', pre_version)
 
 # read the pre-version
-#img = cv2.imread('pre_version.png', 0) #commented by Lucas
+#img = cv2.imread('pre_version.png', 0)
 # ensure binary
 img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1] #changed cv2.THRESH_BINARY_INV to cv2.THRESH_BINARY by Lucas
 # save the the result
 cv2.imwrite(outputpath, img)
 
-#converter parte branca para transparente by Lucas
+#converter parte branca para transparente
 img = Image.open(outputpath)
 img = img.convert("RGBA")
 datas = img.getdata()
