@@ -1,4 +1,4 @@
-var BASEURL = "http://localhost/estagio/gerador_definitivo";
+var BASEURL = "http://localhost/gerador_definitivo";
 
 async function getUrl(url) {
     const response = await axios.get(url);
