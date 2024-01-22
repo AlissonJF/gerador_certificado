@@ -13,7 +13,7 @@
 }
 
 .loading-indicator:after {
-    content: url('http://localhost/estagio/gerador_definitivo/public/images/loadingWhite.svg');
+    content: url('http://localhost/gerador_definitivo/public/images/loadingWhite.svg');
     position: fixed;
     width: 100%;
     top: 50%;
