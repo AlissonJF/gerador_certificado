@@ -1,7 +1,7 @@
 <?php
 
 // coloque a barra / no final
-define('URL', 'http://localhost/estagio/gerador_definitivo/');
+define('URL', 'http://localhost/gerador_definitivo/');
 // **** OBS:> alterar também a url do preloader no main.css
 
 define('LIBS', 'libs/');
